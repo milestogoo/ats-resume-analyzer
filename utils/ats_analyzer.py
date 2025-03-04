@@ -4,8 +4,12 @@ def analyze_resume(text):
     """
     Analyze resume content for ATS compliance with detailed recommendations
     """
+    # Validate input
     if not isinstance(text, str):
         raise TypeError("Expected string input for resume text")
+
+    if not text.strip():
+        raise ValueError("Resume text content is empty")
 
     # Initialize scores and analysis
     format_score = analyze_format(text)
