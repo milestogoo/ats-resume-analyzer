@@ -37,67 +37,6 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# Display upload history in a collapsible section
-with st.expander("📊 Recent Uploads", expanded=False):
-    # Create DataFrame with download buttons
-    history_data = []
-    if st.session_state.upload_history:
-        for entry in st.session_state.upload_history:
-            history_data.append({
-                "filename": entry["filename"],
-                "timestamp": entry["timestamp"],
-                "score": entry["score"],
-                "download": f"📥 {entry['filename']}"
-            })
-    else:
-        history_data.append({
-            "filename": "No uploads yet",
-            "timestamp": datetime.now(),
-            "score": 0,
-            "download": "N/A"
-        })
-
-    history_df = pd.DataFrame(history_data)
-
-    # Display the dataframe
-    clicked = st.dataframe(
-        history_df,
-        column_config={
-            "filename": "File Name",
-            "timestamp": st.column_config.DatetimeColumn(
-                "Upload Time",
-                format="DD/MM/YY HH:mm"
-            ),
-            "score": st.column_config.ProgressColumn(
-                "ATS Score",
-                min_value=0,
-                max_value=100,
-                format="%d%%"
-            ),
-            "download": st.column_config.LinkColumn(
-                "Download Report",
-                help="Click to download the analysis report"
-            )
-        },
-        hide_index=True,
-        use_container_width=True
-    )
-
-# Handle downloads through markdown
-if st.session_state.upload_history:
-    for entry in st.session_state.upload_history:
-        analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
-        b64_data = base64.b64encode(analysis_data.encode()).decode()
-        st.markdown(
-            f"""<div style="display: none;">
-                <a id="download_{entry['filename']}" 
-                   href="data:text/plain;base64,{b64_data}" 
-                   download="{entry['filename']}_analysis.txt">
-                </a>
-            </div>""",
-            unsafe_allow_html=True
-        )
-
 # Upload file
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
 
@@ -120,6 +59,43 @@ if uploaded_file is not None:
         })
         # Keep only last 5 entries
         st.session_state.upload_history = st.session_state.upload_history[-5:]
+
+        # Show recent uploads after successful analysis
+        if st.session_state.upload_history:
+            with st.expander("📊 Recent Uploads", expanded=False):
+                # Create DataFrame with download buttons
+                history_data = [{
+                    "filename": entry["filename"],
+                    "timestamp": entry["timestamp"],
+                    "score": entry["score"],
+                    "download": f"📥 {entry['filename']}"
+                } for entry in st.session_state.upload_history]
+
+                history_df = pd.DataFrame(history_data)
+
+                # Display the dataframe
+                clicked = st.dataframe(
+                    history_df,
+                    column_config={
+                        "filename": "File Name",
+                        "timestamp": st.column_config.DatetimeColumn(
+                            "Upload Time",
+                            format="DD/MM/YY HH:mm"
+                        ),
+                        "score": st.column_config.ProgressColumn(
+                            "ATS Score",
+                            min_value=0,
+                            max_value=100,
+                            format="%d%%"
+                        ),
+                        "download": st.column_config.LinkColumn(
+                            "Download Report",
+                            help="Click to download the analysis report"
+                        )
+                    },
+                    hide_index=True,
+                    use_container_width=True
+                )
 
         # Display Results in a clean layout
         st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
@@ -242,3 +218,18 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"An error occurred while processing your file: {str(e)}")
+
+# Handle downloads through markdown
+if st.session_state.upload_history:
+    for entry in st.session_state.upload_history:
+        analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
+        b64_data = base64.b64encode(analysis_data.encode()).decode()
+        st.markdown(
+            f"""<div style="display: none;">
+                <a id="download_{entry['filename']}" 
+                   href="data:text/plain;base64,{b64_data}" 
+                   download="{entry['filename']}_analysis.txt">
+                </a>
+            </div>""",
+            unsafe_allow_html=True
+        )
