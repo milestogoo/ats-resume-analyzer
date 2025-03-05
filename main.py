@@ -37,47 +37,55 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# Display upload history if exists
-if st.session_state.upload_history:
-    st.markdown("#### 📊 Recent Uploads")
+# Display upload history
+st.markdown("#### 📊 Recent Uploads")
 
-    # Create DataFrame with download buttons
-    history_data = []
+# Create DataFrame with download buttons
+history_data = []
+if st.session_state.upload_history:
     for entry in st.session_state.upload_history:
         history_data.append({
             "filename": entry["filename"],
             "timestamp": entry["timestamp"],
             "score": entry["score"],
-            "download": f"📥 {entry['filename']}"  # We'll handle the button click separately
+            "download": f"📥 {entry['filename']}"
         })
+else:
+    history_data.append({
+        "filename": "No uploads yet",
+        "timestamp": datetime.now(),
+        "score": 0,
+        "download": "N/A"
+    })
 
-    history_df = pd.DataFrame(history_data)
+history_df = pd.DataFrame(history_data)
 
-    # Display the dataframe
-    clicked = st.dataframe(
-        history_df,
-        column_config={
-            "filename": "File Name",
-            "timestamp": st.column_config.DatetimeColumn(
-                "Upload Time",
-                format="DD/MM/YY HH:mm"
-            ),
-            "score": st.column_config.ProgressColumn(
-                "ATS Score",
-                min_value=0,
-                max_value=100,
-                format="%d%%"
-            ),
-            "download": st.column_config.LinkColumn(
-                "Download Report",
-                help="Click to download the analysis report"
-            )
-        },
-        hide_index=True,
-        use_container_width=True
-    )
+# Display the dataframe
+clicked = st.dataframe(
+    history_df,
+    column_config={
+        "filename": "File Name",
+        "timestamp": st.column_config.DatetimeColumn(
+            "Upload Time",
+            format="DD/MM/YY HH:mm"
+        ),
+        "score": st.column_config.ProgressColumn(
+            "ATS Score",
+            min_value=0,
+            max_value=100,
+            format="%d%%"
+        ),
+        "download": st.column_config.LinkColumn(
+            "Download Report",
+            help="Click to download the analysis report"
+        )
+    },
+    hide_index=True,
+    use_container_width=True
+)
 
-    # Handle downloads through markdown
+# Handle downloads through markdown
+if st.session_state.upload_history:
     for entry in st.session_state.upload_history:
         analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
         b64_data = base64.b64encode(analysis_data.encode()).decode()
@@ -90,14 +98,6 @@ if st.session_state.upload_history:
             </div>""",
             unsafe_allow_html=True
         )
-
-# File Upload Section
-st.markdown("""
-    <div class="app-description">
-        Upload your resume to check its ATS compliance and get detailed recommendations.
-        Supported formats: PDF, DOC, DOCX
-    </div>
-    """, unsafe_allow_html=True)
 
 # Upload file
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
