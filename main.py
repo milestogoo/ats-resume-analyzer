@@ -52,7 +52,6 @@ st.markdown("""
 with st.container():
     # Upload section with improved styling
     st.markdown("### 📤 Upload Your Resume")
-    st.markdown("_Supported formats: PDF, DOC, DOCX_")
 
     uploaded_file = st.file_uploader("", type=['pdf', 'doc', 'docx'])
 
