@@ -3,6 +3,7 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    background-color: #FFFFFF;
 }
 
 /* Logo container styling */
@@ -21,32 +22,32 @@
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #E3F2FD;
+    border: 2px dashed #1565C0;
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
-    background-color: #FAFBFC;
+    background-color: #F0F7FF;
     transition: all 0.3s ease;
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #2196F3;
-    background-color: #F5F9FF;
+    border-color: #1976D2;
+    background-color: #E3F2FD;
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #2196F3, #1A237E);
+    background: linear-gradient(90deg, #1976D2, #0D47A1);
     border-radius: 8px;
 }
 
 /* Tab styling */
 .stTabs [data-baseweb="tab-list"] {
     gap: 1rem;
-    background-color: #FAFBFC;
+    background-color: #F0F7FF;
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.1);
 }
 
 .stTabs [data-baseweb="tab"] {
@@ -54,43 +55,43 @@
     white-space: pre-wrap;
     background-color: white;
     border-radius: 8px;
-    color: #1A237E;
+    color: #0D47A1;
     padding: 1rem 1.5rem;
     transition: all 0.3s ease;
-    border: 1px solid #E3F2FD;
+    border: 1px solid #1565C0;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #F5F9FF;
-    border-color: #2196F3;
+    background-color: #E3F2FD;
+    border-color: #1976D2;
 }
 
 .stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #2196F3;
+    background-color: #1565C0;
     color: white;
-    border-color: #2196F3;
+    border-color: #1565C0;
 }
 
 /* Analysis section styling */
 .analysis-section {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     padding: 2rem;
     border-radius: 16px;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 /* HR Stats styling */
 .hr-stats-container {
-    background-color: #FAFBFC;
+    background-color: #F0F7FF;
     border-radius: 16px;
     padding: 2rem;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 .hr-stats-container h3 {
-    color: #1A237E;
+    color: #0D47A1;
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: 600;
@@ -102,7 +103,7 @@
     background-color: white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
     transition: transform 0.2s ease;
 }
 
@@ -112,27 +113,27 @@
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #1A237E;
+    color: #0D47A1;
     font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #2196F3;
+    color: #1565C0;
     font-size: 1.8rem !important;
     font-weight: 700;
 }
 
 /* Typography */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    color: #1A237E;
+    color: #0D47A1;
     font-weight: 600;
     letter-spacing: 0.5px;
     margin-bottom: 1.5rem;
 }
 
 .stMarkdown p {
-    color: #37474F;
+    color: #1565C0;
     line-height: 1.7;
     font-size: 1.1rem;
 }
@@ -144,11 +145,11 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown ul li {
-    background-color: #F5F9FF;
+    background-color: #E3F2FD;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     margin-bottom: 0.5rem;
-    color: #1A237E;
+    color: #0D47A1;
     font-weight: 500;
 }
 
@@ -157,34 +158,34 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     background-color: white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
     .main {
-        background-color: #121212;
+        background-color: #0A1929;
     }
 
     .analysis-section, 
     .hr-stats-container,
     [data-testid="stMetric"] {
-        background-color: #1E1E1E;
+        background-color: #132F4C;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stFileUploader"] {
-        background-color: #1E1E1E;
-        border-color: #2196F3;
+        background-color: #132F4C;
+        border-color: #1565C0;
     }
 
     .stMarkdown p,
     [data-testid="stMetricLabel"] {
-        color: #E0E0E0;
+        color: #90CAF9;
     }
 
     .stMarkdown ul li {
-        background-color: #2D2D2D;
-        color: #E0E0E0;
+        background-color: #1E4976;
+        color: #90CAF9;
     }
 }
