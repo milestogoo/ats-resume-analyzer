@@ -6,15 +6,9 @@ from utils.visualizer import create_score_chart, create_section_breakdown
 from datetime import datetime
 import base64
 
-st.set_page_config(
-    page_title="ATS Resume Analyzer",
-    page_icon="📄",
-    layout="wide"
-)
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+st.set_page_config(page_title="ATS Resume Analyzer",
+                   page_icon="📄",
+                   layout="wide")
 
 # Initialize session state
 if 'upload_history' not in st.session_state:
@@ -22,23 +16,28 @@ if 'upload_history' not in st.session_state:
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 local_css("assets/style.css")
 
-# Custom header with logo
+# Display logo using SVG
 st.markdown("""
-    <div class="header-container">
-        <div class="logo-container">
-            <div class="logo-text">ATS</div>
-        </div>
-        <div class="title-container">
-            <h1 class="app-title">Resume Analyzer</h1>
-            <p class="app-subtitle">AI-Powered Resume Analysis & Optimization</p>
-        </div>
+    <div class="logo-container">
+        <svg width="200" height="80" viewBox="0 0 200 80">
+            <rect width="200" height="80" rx="10" fill="#1A237E"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+                  fill="#FFD700" style="font-size: 40px; font-weight: bold;">
+                ATS ANALYZER
+            </text>
+        </svg>
     </div>
     """, unsafe_allow_html=True)
 
-# Upload file
-uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
+# Upload file section
+uploaded_file = st.file_uploader("Choose your resume file",
+                                 type=['pdf', 'doc', 'docx'])
 
 if uploaded_file is not None:
     try:
@@ -49,13 +48,17 @@ if uploaded_file is not None:
         analysis_results = analyze_resume(resume_text)
 
         # Store analysis results in session state
-        st.session_state.analysis_results[uploaded_file.name] = analysis_results
+        st.session_state.analysis_results[
+            uploaded_file.name] = analysis_results
 
         # Add to upload history
         st.session_state.upload_history.append({
-            "filename": uploaded_file.name,
-            "timestamp": datetime.now(),
-            "score": analysis_results['overall_score']
+            "filename":
+            uploaded_file.name,
+            "timestamp":
+            datetime.now(),
+            "score":
+            analysis_results['overall_score']
         })
         # Keep only last 5 entries
         st.session_state.upload_history = st.session_state.upload_history[-5:]
@@ -77,25 +80,23 @@ if uploaded_file is not None:
                 clicked = st.dataframe(
                     history_df,
                     column_config={
-                        "filename": "File Name",
-                        "timestamp": st.column_config.DatetimeColumn(
-                            "Upload Time",
-                            format="DD/MM/YY HH:mm"
-                        ),
-                        "score": st.column_config.ProgressColumn(
-                            "ATS Score",
-                            min_value=0,
-                            max_value=100,
-                            format="%d%%"
-                        ),
-                        "download": st.column_config.LinkColumn(
+                        "filename":
+                        "File Name",
+                        "timestamp":
+                        st.column_config.DatetimeColumn(
+                            "Upload Time", format="DD/MM/YY HH:mm"),
+                        "score":
+                        st.column_config.ProgressColumn("ATS Score",
+                                                         min_value=0,
+                                                         max_value=100,
+                                                         format="%d%%"),
+                        "download":
+                        st.column_config.LinkColumn(
                             "Download Report",
-                            help="Click to download the analysis report"
-                        )
+                            help="Click to download the analysis report")
                     },
                     hide_index=True,
-                    use_container_width=True
-                )
+                    use_container_width=True)
 
         # Display Results in a clean layout
         st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
@@ -122,7 +123,8 @@ if uploaded_file is not None:
         <div class="hr-stats-container">
             <h3>Quick Stats</h3>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+                    unsafe_allow_html=True)
 
         # Experience and Leadership
         col1, col2 = st.columns(2)
@@ -191,7 +193,10 @@ if uploaded_file is not None:
         # Detailed Analysis
         st.subheader("Detailed Analysis")
 
-        tabs = st.tabs(["Format Analysis", "Content Analysis", "Recommendations", "Raw Data"])
+        tabs = st.tabs([
+            "Format Analysis", "Content Analysis", "Recommendations",
+            "Raw Data"
+        ])
 
         with tabs[0]:
             st.markdown("### Format Compliance")
@@ -200,14 +205,16 @@ if uploaded_file is not None:
 
         with tabs[1]:
             st.markdown("### Content Analysis")
-            for section, details in analysis_results['content_analysis'].items():
+            for section, details in analysis_results['content_analysis'].items(
+            ):
                 st.markdown(f"**{section}**")
                 for detail in details:
                     st.markdown(f"- {detail}")
 
         with tabs[2]:
             st.markdown("### Recommendations")
-            for category, recommendations in analysis_results['recommendations'].items():
+            for category, recommendations in analysis_results[
+                    'recommendations'].items():
                 st.markdown(f"**{category}**")
                 for rec in recommendations:
                     st.markdown(f"- {rec}")
@@ -222,14 +229,13 @@ if uploaded_file is not None:
 # Handle downloads through markdown
 if st.session_state.upload_history:
     for entry in st.session_state.upload_history:
-        analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
+        analysis_data = str(
+            st.session_state.analysis_results.get(entry['filename'], {}))
         b64_data = base64.b64encode(analysis_data.encode()).decode()
-        st.markdown(
-            f"""<div style="display: none;">
+        st.markdown(f"""<div style="display: none;">
                 <a id="download_{entry['filename']}" 
                    href="data:text/plain;base64,{b64_data}" 
                    download="{entry['filename']}_analysis.txt">
                 </a>
             </div>""",
-            unsafe_allow_html=True
-        )
+                    unsafe_allow_html=True)
