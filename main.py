@@ -16,20 +16,102 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-local_css("assets/style.css")
-
-# Initialize session state for upload history
+# Initialize session state
 if 'upload_history' not in st.session_state:
     st.session_state.upload_history = []
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
+if 'theme_colors' not in st.session_state:
+    st.session_state.theme_colors = {
+        'primary': '#FF4B4B',
+        'background': '#FFFFFF',
+        'secondary_bg': '#F0F2F6',
+        'text': '#262730'
+    }
+
+# Sidebar for theme customization
+with st.sidebar:
+    st.markdown("### 🎨 Customize Theme")
+    st.markdown("Personalize your ATS analyzer's appearance")
+
+    # Color pickers
+    primary_color = st.color_picker(
+        "Primary Color",
+        st.session_state.theme_colors['primary'],
+        key='primary_color'
+    )
+    background_color = st.color_picker(
+        "Background Color",
+        st.session_state.theme_colors['background'],
+        key='background_color'
+    )
+    secondary_bg = st.color_picker(
+        "Secondary Background",
+        st.session_state.theme_colors['secondary_bg'],
+        key='secondary_bg'
+    )
+    text_color = st.color_picker(
+        "Text Color",
+        st.session_state.theme_colors['text'],
+        key='text_color'
+    )
+
+    # Update theme colors in session state
+    st.session_state.theme_colors = {
+        'primary': primary_color,
+        'background': background_color,
+        'secondary_bg': secondary_bg,
+        'text': text_color
+    }
+
+    # Apply theme button
+    if st.button("Apply Theme"):
+        st.rerun()
+
+# Apply custom theme
+st.markdown(f"""
+    <style>
+        /* Primary color elements */
+        .stProgress > div > div > div > div {{
+            background-color: {primary_color};
+        }}
+        .stButton button {{
+            background-color: {primary_color};
+            color: white;
+        }}
+        [data-testid="stMetricValue"] {{
+            color: {primary_color};
+        }}
+
+        /* Background colors */
+        .main {{
+            background-color: {background_color};
+        }}
+        .uploadedFile {{
+            background-color: {secondary_bg};
+        }}
+
+        /* Text colors */
+        .logo-title {{
+            color: {text_color};
+        }}
+        .stMarkdown p {{
+            color: {text_color};
+        }}
+        [data-testid="stMetricLabel"] {{
+            color: {text_color};
+        }}
+    </style>
+""", unsafe_allow_html=True)
+
+local_css("assets/style.css")
 
 # Custom header with logo
-st.markdown("""
+st.markdown(f"""
     <div class="header-container">
         <div class="logo-title">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <rect width="40" height="40" rx="8" fill="#FF4B4B"/>
+                <rect width="40" height="40" rx="8" fill="{primary_color}"/>
                 <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <h1>ATS Resume Analyzer</h1>
