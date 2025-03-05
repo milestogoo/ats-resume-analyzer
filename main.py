@@ -56,28 +56,70 @@ if uploaded_file is not None:
         </div>
         """, unsafe_allow_html=True)
 
-        stats_cols = st.columns(4)
         quick_stats = hr_snapshot['Quick Stats']
 
-        with stats_cols[0]:
-            st.metric("Experience", quick_stats['Experience Length'])
-        with stats_cols[1]:
-            st.metric("Education", quick_stats['Education Level'])
-        with stats_cols[2]:
-            st.metric("Key Skills", f"{quick_stats['Key Skills Count']} identified")
-        with stats_cols[3]:
+        # Experience and Leadership
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Experience", quick_stats['Experience'])
+        with col2:
             st.metric("Leadership", quick_stats['Leadership Indicators'])
 
+        # Education Details
+        st.markdown("#### 🎓 Education")
+        edu_details = quick_stats['Education']
+        if isinstance(edu_details, dict):
+            edu_cols = st.columns(3)
+            with edu_cols[0]:
+                st.metric("Level", edu_details['level'])
+            with edu_cols[1]:
+                st.metric("Major", edu_details['major'])
+            with edu_cols[2]:
+                st.metric("Institution", edu_details['institution'])
+        else:
+            st.info(edu_details)
+
+        # Skills Breakdown
+        st.markdown("#### 🛠️ Skills Identified")
+        skills = quick_stats['Skills']
+        skill_cols = st.columns(3)
+
+        with skill_cols[0]:
+            st.markdown("**Technical Skills**")
+            if skills['Technical']:
+                for skill in skills['Technical']:
+                    st.markdown(f"- {skill.title()}")
+            else:
+                st.info("No technical skills identified")
+
+        with skill_cols[1]:
+            st.markdown("**Soft Skills**")
+            if skills['Soft Skills']:
+                for skill in skills['Soft Skills']:
+                    st.markdown(f"- {skill.title()}")
+            else:
+                st.info("No soft skills identified")
+
+        with skill_cols[2]:
+            st.markdown("**Tools & Platforms**")
+            if skills['Tools']:
+                for tool in skills['Tools']:
+                    st.markdown(f"- {tool.title()}")
+            else:
+                st.info("No tools/platforms identified")
+
+
         # Display Initial Impressions and Red Flags
+        st.markdown("#### 📋 Overview")
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown("#### ✅ Initial Impressions")
+            st.markdown("**✅ Initial Impressions**")
             for impression in hr_snapshot['Initial Impressions']:
                 st.markdown(f"- {impression}")
 
         with col2:
-            st.markdown("#### ⚠️ Potential Red Flags")
+            st.markdown("**⚠️ Potential Red Flags**")
             for flag in hr_snapshot['Potential Red Flags']:
                 st.markdown(f"- {flag}")
 
