@@ -5,6 +5,7 @@ from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
 from datetime import datetime
 import base64
+import json
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -197,7 +198,7 @@ if uploaded_file is not None:
         # Detailed Analysis
         st.subheader("Detailed Analysis")
 
-        tabs = st.tabs(["Format Analysis", "Content Analysis", "Recommendations"])
+        tabs = st.tabs(["Format Analysis", "Content Analysis", "Recommendations", "Raw Data"])
 
         with tabs[0]:
             st.markdown("### Format Compliance")
@@ -217,6 +218,10 @@ if uploaded_file is not None:
                 st.markdown(f"**{category}**")
                 for rec in recommendations:
                     st.markdown(f"- {rec}")
+
+        with tabs[3]:
+            st.markdown("### 📝 Raw Analysis Data")
+            st.json(analysis_results)
 
     except Exception as e:
         st.error(f"An error occurred while processing your file: {str(e)}")
