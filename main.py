@@ -3,7 +3,6 @@ import pandas as pd
 from utils.file_parser import parse_resume
 from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
-from utils.linkedin_auth import LinkedInOAuth
 from datetime import datetime
 import base64
 
@@ -22,8 +21,6 @@ if 'upload_history' not in st.session_state:
     st.session_state.upload_history = []
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
-if 'linkedin_oauth_state' not in st.session_state:
-    st.session_state.linkedin_oauth_state = None
 
 local_css("assets/style.css")
 
@@ -94,7 +91,7 @@ if st.session_state.upload_history:
             unsafe_allow_html=True
         )
 
-# File Upload Section with LinkedIn Import
+# File Upload Section
 st.markdown("""
     <div class="app-description">
         Upload your resume to check its ATS compliance and get detailed recommendations.
@@ -102,31 +99,8 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# Add LinkedIn import button
-col1, col2 = st.columns([2, 1])
-with col1:
-    uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
-
-with col2:
-    linkedin_auth = LinkedInOAuth()
-    if st.button("📎 Import from LinkedIn", type="secondary"):
-        auth_url, state = linkedin_auth.get_auth_url()
-        st.session_state.linkedin_oauth_state = state
-        st.markdown(f'<a href="{auth_url}" target="_blank">Click here to authorize LinkedIn</a>', unsafe_allow_html=True)
-        st.info("After authorizing, you'll be redirected back to this page.")
-
-# Handle LinkedIn callback
-if 'code' in st.query_params:
-    try:
-        code = st.query_params['code']
-        full_redirect_uri = f"{linkedin_auth.redirect_uri}?code={code}"
-        token = linkedin_auth.fetch_token(full_redirect_uri)
-        profile_data = linkedin_auth.get_profile_data(token)
-        st.success(f"Successfully imported profile for {profile_data['firstName']} {profile_data['lastName']}")
-        # Process LinkedIn data here (Further implementation needed)
-    except Exception as e:
-        st.error(f"Error importing LinkedIn profile: {str(e)}")
-
+# Upload file
+uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
 
 if uploaded_file is not None:
     try:
@@ -174,7 +148,6 @@ if uploaded_file is not None:
             <h3>Quick Stats</h3>
         </div>
         """, unsafe_allow_html=True)
-
 
         # Experience and Leadership
         col1, col2 = st.columns(2)
