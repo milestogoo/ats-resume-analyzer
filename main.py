@@ -6,6 +6,13 @@ from utils.visualizer import create_score_chart, create_section_breakdown
 from datetime import datetime
 import base64
 
+st.set_page_config(
+    page_title="ATS Resume Analyzer",
+    page_icon="📄",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
 # Initialize session state
 if 'upload_history' not in st.session_state:
     st.session_state.upload_history = []
@@ -13,8 +20,6 @@ if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
 if 'is_first_upload' not in st.session_state:
     st.session_state.is_first_upload = True
-if 'selected_resume' not in st.session_state:
-    st.session_state.selected_resume = None
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -67,197 +72,174 @@ with st.container():
                     "score": analysis_results['overall_score']
                 })
                 st.session_state.upload_history = st.session_state.upload_history[-5:]
-                st.session_state.selected_resume = uploaded_file.name
+
+            # Show recent uploads in collapsible section
+            if st.session_state.upload_history:
+                # Expand the panel on first upload
+                with st.expander("📊 Recent Uploads", expanded=st.session_state.is_first_upload):
+                    history_data = [{
+                        "filename": entry["filename"],
+                        "timestamp": entry["timestamp"],
+                        "score": entry["score"],
+                        "download": f"📥 {entry['filename']}"
+                    } for entry in st.session_state.upload_history]
+
+                    history_df = pd.DataFrame(history_data)
+                    st.dataframe(
+                        history_df,
+                        column_config={
+                            "filename": "File Name",
+                            "timestamp": st.column_config.DatetimeColumn(
+                                "Upload Time", 
+                                format="DD/MM/YY HH:mm"
+                            ),
+                            "score": st.column_config.ProgressColumn(
+                                "ATS Score",
+                                min_value=0,
+                                max_value=100,
+                                format="%d%%"
+                            ),
+                            "download": st.column_config.LinkColumn(
+                                "Download Report",
+                                help="Click to download the analysis report"
+                            )
+                        },
+                        hide_index=True,
+                        use_container_width=True
+                    )
+
+                # Set first upload to false after showing the expanded panel
+                if st.session_state.is_first_upload:
+                    st.session_state.is_first_upload = False
+
+            # Results section with enhanced layout
+            st.markdown("---")
+            st.markdown("## 📊 Analysis Results")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("### Overall ATS Compliance")
+                create_score_chart(analysis_results['overall_score'])
+
+            with col2:
+                st.markdown("### Detailed Breakdown")
+                create_section_breakdown(analysis_results['section_scores'])
+
+            # HR Quick View with improved styling
+            st.markdown("## 💼 HR Quick View")
+            hr_snapshot = analysis_results['hr_snapshot']
+            quick_stats = hr_snapshot['Quick Stats']
+
+            # Experience and Leadership in cards
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("💫 Experience", quick_stats['Experience'])
+            with col2:
+                st.metric("👥 Leadership", quick_stats['Leadership Indicators'])
+
+            # Education section
+            st.markdown("### 🎓 Education Details")
+            edu_details = quick_stats['Education']
+            if isinstance(edu_details, dict):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Degree", edu_details['level'])
+                with col2:
+                    st.metric("Field", edu_details['major'])
+                with col3:
+                    st.metric("Institution", edu_details['institution'])
+            else:
+                st.info(edu_details)
+
+            # Skills section with improved layout
+            st.markdown("### 🛠️ Skills Profile")
+            skills = quick_stats['Skills']
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.markdown("**💻 Technical**")
+                if skills['Technical']:
+                    for skill in skills['Technical']:
+                        st.markdown(f"• {skill.title()}")
+                else:
+                    st.info("No technical skills identified")
+
+            with col2:
+                st.markdown("**🤝 Soft Skills**")
+                if skills['Soft Skills']:
+                    for skill in skills['Soft Skills']:
+                        st.markdown(f"• {skill.title()}")
+                else:
+                    st.info("No soft skills identified")
+
+            with col3:
+                st.markdown("**🔧 Tools & Platforms**")
+                if skills['Tools']:
+                    for tool in skills['Tools']:
+                        st.markdown(f"• {tool.title()}")
+                else:
+                    st.info("No tools/platforms identified")
+
+            # Overview section
+            st.markdown("## 📋 Key Insights")
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.markdown("### ✅ Strengths")
+                for impression in hr_snapshot['Initial Impressions']:
+                    st.markdown(f"• {impression}")
+
+            with col2:
+                st.markdown("### ⚠️ Areas for Improvement")
+                for flag in hr_snapshot['Potential Red Flags']:
+                    st.markdown(f"• {flag}")
+
+            # Detailed Analysis Tabs
+            st.markdown("## 🔍 Detailed Analysis")
+            tabs = st.tabs([
+                "Format Analysis",
+                "Content Analysis",
+                "Recommendations",
+                "Raw Data"
+            ])
+
+            with tabs[0]:
+                st.markdown("### Format Compliance")
+                for item in analysis_results['format_analysis']:
+                    st.markdown(f"• {item}")
+
+            with tabs[1]:
+                st.markdown("### Content Analysis")
+                for section, details in analysis_results['content_analysis'].items():
+                    st.markdown(f"**{section}**")
+                    for detail in details:
+                        st.markdown(f"• {detail}")
+
+            with tabs[2]:
+                st.markdown("### Recommendations")
+                for category, recommendations in analysis_results['recommendations'].items():
+                    st.markdown(f"**{category}**")
+                    for rec in recommendations:
+                        st.markdown(f"• {rec}")
+
+            with tabs[3]:
+                st.markdown("### 📝 Raw Analysis Data")
+                st.json(analysis_results)
 
         except Exception as e:
             st.error(f"An error occurred while processing your file: {str(e)}")
 
-    # Show recent uploads in collapsible section
-    if st.session_state.upload_history:
-        with st.expander("📊 Recent Uploads", expanded=st.session_state.is_first_upload):
-            for entry in st.session_state.upload_history:
-                col1, col2, col3 = st.columns([2, 1, 1])
-                with col1:
-                    if st.button(f"📄 {entry['filename']}", key=f"btn_{entry['filename']}"):
-                        analysis_results = st.session_state.analysis_results[entry['filename']]
-
-                        # Display results section
-                        st.markdown("---")
-                        st.markdown(f"## 📊 Analysis Results for {entry['filename']}")
-
-                        result_col1, result_col2 = st.columns(2)
-                        with result_col1:
-                            st.markdown("### Overall ATS Compliance")
-                            create_score_chart(analysis_results['overall_score'])
-
-                        with result_col2:
-                            st.markdown("### Detailed Breakdown")
-                            create_section_breakdown(analysis_results['section_scores'])
-
-                        # Continue with rest of the analysis display...
-                        st.markdown("## 💼 HR Quick View")
-                        hr_snapshot = analysis_results['hr_snapshot']
-                        quick_stats = hr_snapshot['Quick Stats']
-
-                        exp_col1, exp_col2 = st.columns(2)
-                        with exp_col1:
-                            st.metric("💫 Experience", quick_stats['Experience'])
-                        with exp_col2:
-                            st.metric("👥 Leadership", quick_stats['Leadership Indicators'])
-
-                        st.markdown("### 🎓 Education Details")
-                        edu_details = quick_stats['Education']
-                        if isinstance(edu_details, dict):
-                            col1, col2, col3 = st.columns(3)
-                            with col1:
-                                st.metric("Degree", edu_details['level'])
-                            with col2:
-                                st.metric("Field", edu_details['major'])
-                            with col3:
-                                st.metric("Institution", edu_details['institution'])
-                        else:
-                            st.info(edu_details)
-
-                        st.markdown("### 🛠️ Skills Profile")
-                        skills = quick_stats['Skills']
-                        col1, col2, col3 = st.columns(3)
-
-                        with col1:
-                            st.markdown("**💻 Technical**")
-                            if skills['Technical']:
-                                for skill in skills['Technical']:
-                                    st.markdown(f"• {skill.title()}")
-                            else:
-                                st.info("No technical skills identified")
-
-                        with col2:
-                            st.markdown("**🤝 Soft Skills**")
-                            if skills['Soft Skills']:
-                                for skill in skills['Soft Skills']:
-                                    st.markdown(f"• {skill.title()}")
-                            else:
-                                st.info("No soft skills identified")
-
-                        with col3:
-                            st.markdown("**🔧 Tools & Platforms**")
-                            if skills['Tools']:
-                                for tool in skills['Tools']:
-                                    st.markdown(f"• {tool.title()}")
-                            else:
-                                st.info("No tools/platforms identified")
-
-                        st.markdown("## 📋 Key Insights")
-                        col1, col2 = st.columns(2)
-
-                        with col1:
-                            st.markdown("### ✅ Strengths")
-                            for impression in hr_snapshot['Initial Impressions']:
-                                st.markdown(f"• {impression}")
-
-                        with col2:
-                            st.markdown("### ⚠️ Areas for Improvement")
-                            for flag in hr_snapshot['Potential Red Flags']:
-                                st.markdown(f"• {flag}")
-
-                        st.markdown("## 🔍 Detailed Analysis")
-                        tabs = st.tabs([
-                            "Format Analysis",
-                            "Content Analysis",
-                            "Recommendations",
-                            "Raw Data"
-                        ])
-
-                        with tabs[0]:
-                            st.markdown("### Format Compliance")
-                            for item in analysis_results['format_analysis']:
-                                st.markdown(f"• {item}")
-
-                        with tabs[1]:
-                            st.markdown("### Content Analysis")
-                            for section, details in analysis_results['content_analysis'].items():
-                                st.markdown(f"**{section}**")
-                                for detail in details:
-                                    st.markdown(f"• {detail}")
-
-                        with tabs[2]:
-                            st.markdown("### 🎯 Recommendations for Improvement")
-
-                            # High Priority Recommendations
-                            if analysis_results['recommendations'].get("High Priority"):
-                                st.markdown("#### ⚠️ Critical Improvements Needed")
-                                for rec in analysis_results['recommendations']["High Priority"]:
-                                    with st.expander(f"🔴 {rec['issue']}", expanded=True):
-                                        st.markdown(f"""
-                                        **Recommended Action:**  
-                                        {rec['action']}
-
-                                        **Expected Impact:**  
-                                        {rec['impact']}
-                                        """)
-
-                            # Format Improvements
-                            if analysis_results['recommendations'].get("Format Improvements"):
-                                st.markdown("#### 📝 Format Optimization")
-                                for rec in analysis_results['recommendations']["Format Improvements"]:
-                                    with st.expander(f"🔸 {rec['issue']}", expanded=False):
-                                        st.markdown(f"""
-                                        **Recommended Action:**  
-                                        {rec['action']}
-
-                                        **Expected Impact:**  
-                                        {rec['impact']}
-                                        """)
-
-                            # Content Enhancements
-                            if analysis_results['recommendations'].get("Content Enhancements"):
-                                st.markdown("#### 📈 Content Enhancement")
-                                for rec in analysis_results['recommendations']["Content Enhancements"]:
-                                    with st.expander(f"🔹 {rec['issue']}", expanded=False):
-                                        st.markdown(f"""
-                                        **Recommended Action:**  
-                                        {rec['action']}
-
-                                        **Expected Impact:**  
-                                        {rec['impact']}
-                                        """)
-
-                            # Keyword Optimization
-                            if analysis_results['recommendations'].get("Keyword Optimization"):
-                                st.markdown("#### 🎯 Keyword Optimization")
-                                for rec in analysis_results['recommendations']["Keyword Optimization"]:
-                                    with st.expander(f"📌 {rec['issue']}", expanded=False):
-                                        st.markdown(f"""
-                                        **Recommended Action:**  
-                                        {rec['action']}
-
-                                        **Expected Impact:**  
-                                        {rec['impact']}
-                                        """)
-
-                        with tabs[3]:
-                            st.markdown("### 📝 Raw Analysis Data")
-                            st.json(analysis_results)
-
-                        # Handle downloads through markdown
-                        analysis_data = str(analysis_results)
-                        b64_data = base64.b64encode(analysis_data.encode()).decode()
-                        st.markdown(f"""
-                            <div style="display: none;">
-                                <a id="download_{entry['filename']}" 
-                                   href="data:text/plain;base64,{b64_data}" 
-                                   download="{entry['filename']}_analysis.txt">
-                                </a>
-                            </div>""",
-                            unsafe_allow_html=True
-                        )
-
-                with col2:
-                    st.write(entry['timestamp'].strftime("%Y-%m-%d %H:%M"))
-                with col3:
-                    st.write(f"{entry['score']}%")
-
-        # Set first upload to false after showing the expanded panel
-        if st.session_state.is_first_upload:
-            st.session_state.is_first_upload = False
-
-    # Display analysis results if a resume is selected (This section is removed as it's now handled within the Recent Uploads expander)
+# Handle downloads through markdown
+if st.session_state.upload_history:
+    for entry in st.session_state.upload_history:
+        analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
+        b64_data = base64.b64encode(analysis_data.encode()).decode()
+        st.markdown(f"""
+            <div style="display: none;">
+                <a id="download_{entry['filename']}" 
+                   href="data:text/plain;base64,{b64_data}" 
+                   download="{entry['filename']}_analysis.txt">
+                </a>
+            </div>""",
+            unsafe_allow_html=True
+        )

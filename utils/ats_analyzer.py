@@ -147,69 +147,28 @@ def check_skills(text):
     return issues if issues else ["Skills section appears well-structured"]
 
 def generate_recommendations(text, format_analysis, content_analysis):
-    """Generate detailed recommendations based on analysis"""
+    """Generate recommendations based on analysis"""
     recommendations = {
-        "High Priority": [],
         "Format Improvements": [],
         "Content Enhancements": [],
         "Keyword Optimization": []
     }
 
-    # High priority recommendations
-    if len(text.split('\n')) < 10:
-        recommendations["High Priority"].append({
-            "issue": "Resume structure needs improvement",
-            "action": "Add clear section headings (Experience, Education, Skills)",
-            "impact": "Improves ATS parsing accuracy by 40%"
-        })
-    if not re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text):
-        recommendations["High Priority"].append({
-            "issue": "Missing contact information",
-            "action": "Add professional email address in header section",
-            "impact": "Essential for recruiter contact"
-        })
-
     # Format recommendations
+    if len(text.split('\n')) < 10:
+        recommendations["Format Improvements"].append("Improve resume structure with clear section headings")
     if re.search(r'[^\x00-\x7F]+', text):
-        recommendations["Format Improvements"].append({
-            "issue": "Special characters detected",
-            "action": "Replace special characters with standard ASCII alternatives",
-            "impact": "Ensures proper ATS parsing"
-        })
-    if len(text) < 500:
-        recommendations["Format Improvements"].append({
-            "issue": "Resume content length is insufficient",
-            "action": "Expand on experience and achievements (aim for 500-1000 words)",
-            "impact": "Better keyword coverage and readability"
-        })
+        recommendations["Format Improvements"].append("Remove special characters and use standard fonts")
 
     # Content recommendations
+    if not re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text):
+        recommendations["Content Enhancements"].append("Add a professional email address")
     if not re.search(r'experience|work|employment', text.lower()):
-        recommendations["Content Enhancements"].append({
-            "issue": "Work experience section not clearly defined",
-            "action": "Add clear 'Professional Experience' section with bullet points",
-            "impact": "Improves experience visibility to ATS"
-        })
-    if not re.search(r'\b(achieved|improved|increased|led|managed|developed)\b', text.lower()):
-        recommendations["Content Enhancements"].append({
-            "issue": "Limited action verbs",
-            "action": "Include strong action verbs to describe achievements",
-            "impact": "Demonstrates impact and leadership"
-        })
+        recommendations["Content Enhancements"].append("Clearly label your work experience section")
 
-    # Keyword optimization
+    # Keyword recommendations
     if not re.search(r'skills|expertise|proficiencies', text.lower()):
-        recommendations["Keyword Optimization"].append({
-            "issue": "Skills section not optimized",
-            "action": "Add dedicated skills section with industry-specific keywords",
-            "impact": "Increases ATS matching score"
-        })
-    if not re.search(r'\b\d+%|\d+\s*(million|thousand|k)\b', text.lower()):
-        recommendations["Keyword Optimization"].append({
-            "issue": "Missing quantifiable achievements",
-            "action": "Add metrics and numbers to demonstrate impact",
-            "impact": "Makes achievements more concrete"
-        })
+        recommendations["Keyword Optimization"].append("Add a dedicated skills section with relevant keywords")
 
     return recommendations
 
