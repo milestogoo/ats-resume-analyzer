@@ -22,24 +22,24 @@
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #5C6BC0;
+    border: 2px dashed #3F51B5;
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
     background-color: #FFFFFF;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.1);
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #3949AB;
+    border-color: #283593;
     background-color: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.2);
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.2);
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #5C6BC0, #3949AB);
+    background: linear-gradient(90deg, #3F51B5, #283593);
     border-radius: 8px;
 }
 
@@ -49,7 +49,7 @@
     background-color: #FFFFFF;
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
 }
 
 .stTabs [data-baseweb="tab"] {
@@ -65,13 +65,13 @@
 
 .stTabs [data-baseweb="tab"]:hover {
     background-color: #E8EAF6;
-    border-color: #5C6BC0;
+    border-color: #3F51B5;
 }
 
 .stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #5C6BC0;
+    background-color: #3F51B5;
     color: white;
-    border-color: #5C6BC0;
+    border-color: #3F51B5;
 }
 
 /* Analysis section styling */
@@ -80,7 +80,7 @@
     padding: 2rem;
     border-radius: 16px;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
 }
 
 /* HR Stats styling */
@@ -89,7 +89,7 @@
     border-radius: 16px;
     padding: 2rem;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
 }
 
 .hr-stats-container h3 {
@@ -105,13 +105,13 @@
     background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
     transition: transform 0.2s ease;
 }
 
 [data-testid="stMetric"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(92, 107, 192, 0.15);
+    box-shadow: 0 6px 16px rgba(63, 81, 181, 0.15);
 }
 
 [data-testid="stMetricLabel"] {
@@ -122,7 +122,7 @@
 }
 
 [data-testid="stMetricValue"] {
-    color: #5C6BC0;
+    color: #3F51B5;
     font-size: 1.8rem !important;
     font-weight: 700;
 }
@@ -136,7 +136,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown p {
-    color: #3949AB;
+    color: #3F51B5;
     line-height: 1.7;
     font-size: 1.1rem;
 }
@@ -162,7 +162,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
 }
 
 /* Dark theme compatibility */
@@ -180,7 +180,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 
     [data-testid="stFileUploader"] {
         background-color: #283593;
-        border-color: #5C6BC0;
+        border-color: #3F51B5;
     }
 
     .stMarkdown p,
@@ -189,8 +189,8 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     }
 
     .stMarkdown ul li {
-        background-color: #3949AB;
+        background-color: #3F51B5;
         color: #C5CAE9;
-        border-color: #5C6BC0;
+        border-color: #3F51B5;
     }
 }
