@@ -18,6 +18,8 @@ if 'upload_history' not in st.session_state:
     st.session_state.upload_history = []
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
+if 'is_first_upload' not in st.session_state:
+    st.session_state.is_first_upload = True
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -73,7 +75,8 @@ with st.container():
 
             # Show recent uploads in collapsible section
             if st.session_state.upload_history:
-                with st.expander("📊 Recent Uploads", expanded=False):
+                # Expand the panel on first upload
+                with st.expander("📊 Recent Uploads", expanded=st.session_state.is_first_upload):
                     history_data = [{
                         "filename": entry["filename"],
                         "timestamp": entry["timestamp"],
@@ -104,6 +107,10 @@ with st.container():
                         hide_index=True,
                         use_container_width=True
                     )
+
+                # Set first upload to false after showing the expanded panel
+                if st.session_state.is_first_upload:
+                    st.session_state.is_first_upload = False
 
             # Results section with enhanced layout
             st.markdown("---")
