@@ -41,19 +41,13 @@ if st.session_state.upload_history:
             "filename": entry["filename"],
             "timestamp": entry["timestamp"],
             "score": entry["score"],
-            "download": f"""
-            <a href="data:text/plain;base64,{base64.b64encode(str(st.session_state.analysis_results.get(entry['filename'], {})).encode()).decode()}" 
-               download="{entry['filename']}_analysis.txt" 
-               style="text-decoration:none;">
-                <button style="background-color:#FF4B4B;color:white;padding:0.5rem 1rem;border:none;border-radius:4px;cursor:pointer;">
-                    📥 Download Report
-                </button>
-            </a>
-            """
+            "download": f"📥 {entry['filename']}"  # We'll handle the button click separately
         })
 
     history_df = pd.DataFrame(history_data)
-    st.dataframe(
+
+    # Display the dataframe
+    clicked = st.dataframe(
         history_df,
         column_config={
             "filename": "File Name",
@@ -67,16 +61,28 @@ if st.session_state.upload_history:
                 max_value=100,
                 format="%d%%"
             ),
-            "download": st.column_config.Column(
-                "Download",
-                help="Download the analysis report",
-                width="medium"
+            "download": st.column_config.LinkColumn(
+                "Download Report",
+                help="Click to download the analysis report"
             )
         },
         hide_index=True,
-        use_container_width=True,
-        html=True
+        use_container_width=True
     )
+
+    # Handle downloads through markdown
+    for entry in st.session_state.upload_history:
+        analysis_data = str(st.session_state.analysis_results.get(entry['filename'], {}))
+        b64_data = base64.b64encode(analysis_data.encode()).decode()
+        st.markdown(
+            f"""<div style="display: none;">
+                <a id="download_{entry['filename']}" 
+                   href="data:text/plain;base64,{b64_data}" 
+                   download="{entry['filename']}_analysis.txt">
+                </a>
+            </div>""",
+            unsafe_allow_html=True
+        )
 
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
 
