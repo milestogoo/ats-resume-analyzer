@@ -5,7 +5,6 @@ from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
 from datetime import datetime
 import base64
-import json
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -25,11 +24,25 @@ if 'upload_history' not in st.session_state:
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
 
-st.title("📄 ATS Resume Analyzer")
+# Custom header with logo
 st.markdown("""
-    Upload your resume to check its ATS compliance and get detailed recommendations.
-    Supported formats: PDF, DOC, DOCX
-""")
+    <div class="header-container">
+        <div class="logo-title">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="8" fill="#FF4B4B"/>
+                <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h1>ATS Resume Analyzer</h1>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("""
+    <div class="app-description">
+        Upload your resume to check its ATS compliance and get detailed recommendations.
+        Supported formats: PDF, DOC, DOCX
+    </div>
+    """, unsafe_allow_html=True)
 
 # Display upload history if exists
 if st.session_state.upload_history:
@@ -107,7 +120,9 @@ if uploaded_file is not None:
         # Keep only last 5 entries
         st.session_state.upload_history = st.session_state.upload_history[-5:]
 
-        # Display Results
+        # Display Results in a clean layout
+        st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
+
         col1, col2 = st.columns(2)
 
         with col1:
@@ -117,6 +132,8 @@ if uploaded_file is not None:
         with col2:
             st.subheader("Section-wise Breakdown")
             create_section_breakdown(analysis_results['section_scores'])
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
         # HR Quick View
         st.subheader("💼 HR Quick View")
