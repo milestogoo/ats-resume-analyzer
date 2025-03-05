@@ -3,7 +3,7 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #F5F9FF;
+    background-color: #F3F6FF;
 }
 
 /* Logo container styling */
@@ -22,24 +22,24 @@
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #0277BD;
+    border: 2px dashed #5C6BC0;
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
     background-color: #FFFFFF;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 2px 4px rgba(92, 107, 192, 0.1);
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #01579B;
+    border-color: #3949AB;
     background-color: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(2, 119, 189, 0.2);
+    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.2);
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #0277BD, #01579B);
+    background: linear-gradient(90deg, #5C6BC0, #3949AB);
     border-radius: 8px;
 }
 
@@ -49,29 +49,29 @@
     background-color: #FFFFFF;
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 2px 8px rgba(92, 107, 192, 0.1);
 }
 
 .stTabs [data-baseweb="tab"] {
     height: 50px;
     white-space: pre-wrap;
-    background-color: #F5F9FF;
+    background-color: #F3F6FF;
     border-radius: 8px;
-    color: #01579B;
+    color: #283593;
     padding: 1rem 1.5rem;
     transition: all 0.3s ease;
-    border: 1px solid #E1F5FE;
+    border: 1px solid #E8EAF6;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #E1F5FE;
-    border-color: #0277BD;
+    background-color: #E8EAF6;
+    border-color: #5C6BC0;
 }
 
 .stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #0277BD;
+    background-color: #5C6BC0;
     color: white;
-    border-color: #0277BD;
+    border-color: #5C6BC0;
 }
 
 /* Analysis section styling */
@@ -80,7 +80,7 @@
     padding: 2rem;
     border-radius: 16px;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
 }
 
 /* HR Stats styling */
@@ -89,11 +89,11 @@
     border-radius: 16px;
     padding: 2rem;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
 }
 
 .hr-stats-container h3 {
-    color: #01579B;
+    color: #283593;
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: 600;
@@ -105,38 +105,38 @@
     background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
     transition: transform 0.2s ease;
 }
 
 [data-testid="stMetric"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(2, 119, 189, 0.15);
+    box-shadow: 0 6px 16px rgba(92, 107, 192, 0.15);
 }
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #01579B;
+    color: #283593;
     font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #0277BD;
+    color: #5C6BC0;
     font-size: 1.8rem !important;
     font-weight: 700;
 }
 
 /* Typography */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    color: #01579B;
+    color: #283593;
     font-weight: 600;
     letter-spacing: 0.5px;
     margin-bottom: 1.5rem;
 }
 
 .stMarkdown p {
-    color: #0277BD;
+    color: #3949AB;
     line-height: 1.7;
     font-size: 1.1rem;
 }
@@ -148,13 +148,13 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown ul li {
-    background-color: #F5F9FF;
+    background-color: #F3F6FF;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     margin-bottom: 0.5rem;
-    color: #01579B;
+    color: #283593;
     font-weight: 500;
-    border: 1px solid #E1F5FE;
+    border: 1px solid #E8EAF6;
 }
 
 /* Recent uploads table styling */
@@ -162,35 +162,35 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.1);
 }
 
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
     .main {
-        background-color: #002233;
+        background-color: #1A237E;
     }
 
     .analysis-section, 
     .hr-stats-container,
     [data-testid="stMetric"] {
-        background-color: #003355;
+        background-color: #283593;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stFileUploader"] {
-        background-color: #003355;
-        border-color: #0277BD;
+        background-color: #283593;
+        border-color: #5C6BC0;
     }
 
     .stMarkdown p,
     [data-testid="stMetricLabel"] {
-        color: #81D4FA;
+        color: #C5CAE9;
     }
 
     .stMarkdown ul li {
-        background-color: #004466;
-        color: #81D4FA;
-        border-color: #0277BD;
+        background-color: #3949AB;
+        color: #C5CAE9;
+        border-color: #5C6BC0;
     }
 }

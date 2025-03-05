@@ -50,95 +50,92 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# Create a grid of UI inspirations using st.columns
+# Updated UI inspirations section
 st.markdown("## 💫 UI Design Inspirations")
 
-# Create three columns for the mockups
 col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("""
-    <div style="padding: 20px; background: linear-gradient(135deg, #1E88E5, #1565C0); border-radius: 15px; color: white;">
-        <h3 style="color: white;">Modern Blue</h3>
-        <div style="background: white; padding: 15px; border-radius: 10px; margin: 10px 0; color: #1565C0;">
-            <div style="height: 10px; width: 60%; background: #E3F2FD; border-radius: 5px; margin: 5px 0;"></div>
-            <div style="height: 10px; width: 80%; background: #E3F2FD; border-radius: 5px; margin: 5px 0;"></div>
+    <div style="padding: 20px; background: linear-gradient(135deg, #7986CB, #5C6BC0); border-radius: 15px; color: white;">
+        <h3 style="color: white;">Royal Indigo</h3>
+        <div style="background: white; padding: 15px; border-radius: 10px; margin: 10px 0; color: #5C6BC0;">
+            <div style="height: 10px; width: 60%; background: #E8EAF6; border-radius: 5px; margin: 5px 0;"></div>
+            <div style="height: 10px; width: 80%; background: #E8EAF6; border-radius: 5px; margin: 5px 0;"></div>
         </div>
-        <p style="color: #E3F2FD; font-size: 0.9em;">Clean, professional design with strong emphasis on readability</p>
+        <p style="color: #E8EAF6; font-size: 0.9em;">Professional and elegant design with premium feel</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown("""
-    <div style="padding: 20px; background: linear-gradient(135deg, #0288D1, #01579B); border-radius: 15px; color: white;">
-        <h3 style="color: white;">Deep Ocean</h3>
-        <div style="background: #F5F9FF; padding: 15px; border-radius: 10px; margin: 10px 0; color: #01579B;">
-            <div style="height: 10px; width: 70%; background: #E1F5FE; border-radius: 5px; margin: 5px 0;"></div>
-            <div style="height: 10px; width: 90%; background: #E1F5FE; border-radius: 5px; margin: 5px 0;"></div>
+    <div style="padding: 20px; background: linear-gradient(135deg, #5C6BC0, #3949AB); border-radius: 15px; color: white;">
+        <h3 style="color: white;">Deep Purple</h3>
+        <div style="background: #F3F6FF; padding: 15px; border-radius: 10px; margin: 10px 0; color: #3949AB;">
+            <div style="height: 10px; width: 70%; background: #E8EAF6; border-radius: 5px; margin: 5px 0;"></div>
+            <div style="height: 10px; width: 90%; background: #E8EAF6; border-radius: 5px; margin: 5px 0;"></div>
         </div>
-        <p style="color: #B3E5FC; font-size: 0.9em;">Rich, deep colors with excellent contrast for key information</p>
+        <p style="color: #C5CAE9; font-size: 0.9em;">Rich, deep colors with excellent contrast for key information</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown("""
-    <div style="padding: 20px; background: linear-gradient(135deg, #039BE5, #0277BD); border-radius: 15px; color: white;">
-        <h3 style="color: white;">Crystal Clear</h3>
-        <div style="background: white; padding: 15px; border-radius: 10px; margin: 10px 0; color: #0277BD;">
-            <div style="height: 10px; width: 75%; background: #F5F9FF; border-radius: 5px; margin: 5px 0;"></div>
-            <div style="height: 10px; width: 85%; background: #F5F9FF; border-radius: 5px; margin: 5px 0;"></div>
+    <div style="padding: 20px; background: linear-gradient(135deg, #3F51B5, #283593); border-radius: 15px; color: white;">
+        <h3 style="color: white;">Crystal Indigo</h3>
+        <div style="background: white; padding: 15px; border-radius: 10px; margin: 10px 0; color: #283593;">
+            <div style="height: 10px; width: 75%; background: #F3F6FF; border-radius: 5px; margin: 5px 0;"></div>
+            <div style="height: 10px; width: 85%; background: #F3F6FF; border-radius: 5px; margin: 5px 0;"></div>
         </div>
-        <p style="color: #E1F5FE; font-size: 0.9em;">Bright and airy design with subtle depth effects</p>
+        <p style="color: #C5CAE9; font-size: 0.9em;">Clean and modern with subtle depth effects</p>
     </div>
     """, unsafe_allow_html=True)
 
 # Add color palette section
 st.markdown("### 🎨 Color Palettes")
 
-# Create two columns for the color palettes
 col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("""
     <div style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <h4>Professional Blue</h4>
+        <h4>Professional Indigo</h4>
         <div style="display: flex; gap: 10px; margin: 10px 0;">
-            <div style="background: #0277BD; width: 50px; height: 50px; border-radius: 8px;"></div>
-            <div style="background: #01579B; width: 50px; height: 50px; border-radius: 8px;"></div>
-            <div style="background: #F5F9FF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #E1F5FE;"></div>
-            <div style="background: #FFFFFF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #E1F5FE;"></div>
+            <div style="background: #5C6BC0; width: 50px; height: 50px; border-radius: 8px;"></div>
+            <div style="background: #3949AB; width: 50px; height: 50px; border-radius: 8px;"></div>
+            <div style="background: #F3F6FF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #E8EAF6;"></div>
+            <div style="background: #FFFFFF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #E8EAF6;"></div>
         </div>
-        <p style="color: #666; font-size: 0.9em;">Primary: #0277BD<br>Secondary: #01579B<br>Background: #F5F9FF</p>
+        <p style="color: #666; font-size: 0.9em;">Primary: #5C6BC0<br>Secondary: #3949AB<br>Background: #F3F6FF</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown("""
     <div style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <h4>Ocean Depths</h4>
+        <h4>Royal Purple</h4>
         <div style="display: flex; gap: 10px; margin: 10px 0;">
-            <div style="background: #039BE5; width: 50px; height: 50px; border-radius: 8px;"></div>
-            <div style="background: #0288D1; width: 50px; height: 50px; border-radius: 8px;"></div>
-            <div style="background: #E1F5FE; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #B3E5FC;"></div>
-            <div style="background: #FFFFFF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #B3E5FC;"></div>
+            <div style="background: #7986CB; width: 50px; height: 50px; border-radius: 8px;"></div>
+            <div style="background: #5C6BC0; width: 50px; height: 50px; border-radius: 8px;"></div>
+            <div style="background: #E8EAF6; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #C5CAE9;"></div>
+            <div style="background: #FFFFFF; width: 50px; height: 50px; border-radius: 8px; border: 1px solid #C5CAE9;"></div>
         </div>
-        <p style="color: #666; font-size: 0.9em;">Primary: #039BE5<br>Secondary: #0288D1<br>Background: #E1F5FE</p>
+        <p style="color: #666; font-size: 0.9em;">Primary: #7986CB<br>Secondary: #5C6BC0<br>Background: #E8EAF6</p>
     </div>
     """, unsafe_allow_html=True)
 
-# Add UI Elements section
+st.markdown("---")
 st.markdown("### 🎯 Key UI Elements")
 
-# Create three columns for UI elements
 col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("""
     <div style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <h4>Cards & Containers</h4>
-        <div style="background: #F5F9FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
-            <div style="height: 40px; background: white; border-radius: 8px; margin: 5px 0; border: 1px solid #E1F5FE;"></div>
-            <div style="height: 40px; background: white; border-radius: 8px; margin: 5px 0; border: 1px solid #E1F5FE;"></div>
+        <div style="background: #F3F6FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
+            <div style="height: 40px; background: white; border-radius: 8px; margin: 5px 0; border: 1px solid #E8EAF6;"></div>
+            <div style="height: 40px; background: white; border-radius: 8px; margin: 5px 0; border: 1px solid #E8EAF6;"></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -147,9 +144,9 @@ with col2:
     st.markdown("""
     <div style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <h4>Metrics & Stats</h4>
-        <div style="background: #F5F9FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
-            <div style="height: 20px; width: 80%; background: #0277BD; border-radius: 10px; margin: 10px 0;"></div>
-            <div style="height: 20px; width: 60%; background: #01579B; border-radius: 10px; margin: 10px 0;"></div>
+        <div style="background: #F3F6FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
+            <div style="height: 20px; width: 80%; background: #5C6BC0; border-radius: 10px; margin: 10px 0;"></div>
+            <div style="height: 20px; width: 60%; background: #3949AB; border-radius: 10px; margin: 10px 0;"></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -158,9 +155,9 @@ with col3:
     st.markdown("""
     <div style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <h4>Interactive Elements</h4>
-        <div style="background: #F5F9FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
-            <div style="height: 40px; background: #0277BD; border-radius: 8px; margin: 10px 0; display: flex; align-items: center; justify-content: center; color: white;">Button</div>
-            <div style="height: 40px; background: white; border-radius: 8px; margin: 10px 0; border: 2px dashed #0277BD;"></div>
+        <div style="background: #F3F6FF; padding: 15px; border-radius: 10px; margin: 10px 0;">
+            <div style="height: 40px; background: #5C6BC0; border-radius: 8px; margin: 10px 0; display: flex; align-items: center; justify-content: center; color: white;">Button</div>
+            <div style="height: 40px; background: white; border-radius: 8px; margin: 10px 0; border: 2px dashed #5C6BC0;"></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
