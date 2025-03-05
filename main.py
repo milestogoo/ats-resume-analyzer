@@ -3,6 +3,7 @@ import pandas as pd
 from utils.file_parser import parse_resume
 from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
+from datetime import datetime
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -16,11 +17,37 @@ def local_css(file_name):
 
 local_css("assets/style.css")
 
+# Initialize session state for upload history
+if 'upload_history' not in st.session_state:
+    st.session_state.upload_history = []
+
 st.title("📄 ATS Resume Analyzer")
 st.markdown("""
     Upload your resume to check its ATS compliance and get detailed recommendations.
     Supported formats: PDF, DOC, DOCX
 """)
+
+# Display upload history if exists
+if st.session_state.upload_history:
+    st.markdown("#### 📊 Recent Uploads")
+    history_df = pd.DataFrame(st.session_state.upload_history)
+    st.dataframe(
+        history_df,
+        column_config={
+            "filename": "File Name",
+            "timestamp": st.column_config.DatetimeColumn(
+                "Upload Time",
+                format="DD/MM/YY HH:mm"
+            ),
+            "score": st.column_config.ProgressColumn(
+                "ATS Score",
+                min_value=0,
+                max_value=100,
+                format="%d%%"
+            )
+        },
+        hide_index=True
+    )
 
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
 
@@ -31,6 +58,15 @@ if uploaded_file is not None:
 
         # Analyze the content
         analysis_results = analyze_resume(resume_text)
+
+        # Add to upload history
+        st.session_state.upload_history.append({
+            "filename": uploaded_file.name,
+            "timestamp": datetime.now(),
+            "score": analysis_results['overall_score']
+        })
+        # Keep only last 5 entries
+        st.session_state.upload_history = st.session_state.upload_history[-5:]
 
         # Display Results
         col1, col2 = st.columns(2)
