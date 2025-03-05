@@ -3,8 +3,6 @@ import pandas as pd
 from utils.file_parser import parse_resume
 from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
-from utils.pdf_generator import create_pdf_report
-import base64
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -108,7 +106,6 @@ if uploaded_file is not None:
             else:
                 st.info("No tools/platforms identified")
 
-
         # Display Initial Impressions and Red Flags
         st.markdown("#### 📋 Overview")
         col1, col2 = st.columns(2)
@@ -146,23 +143,6 @@ if uploaded_file is not None:
                 st.markdown(f"**{category}**")
                 for rec in recommendations:
                     st.markdown(f"- {rec}")
-
-        # Generate and offer PDF download
-        pdf_buffer = create_pdf_report(analysis_results)
-        pdf_bytes = pdf_buffer.getvalue()
-        b64_pdf = base64.b64encode(pdf_bytes).decode()
-
-        # Create download buttons
-        st.markdown("### Download Reports")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            href = f'<a href="data:application/pdf;base64,{b64_pdf}" download="ats_analysis_report.pdf" class="download-button">Download PDF Report</a>'
-            st.markdown(href, unsafe_allow_html=True)
-
-        with col2:
-            txt_href = f'<a href="data:text/plain;base64,{base64.b64encode(str(analysis_results).encode()).decode()}" download="ats_analysis_report.txt" class="download-button">Download Text Report</a>'
-            st.markdown(txt_href, unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"An error occurred while processing your file: {str(e)}")
