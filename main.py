@@ -4,6 +4,7 @@ from utils.file_parser import parse_resume
 from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
 from datetime import datetime
+import base64
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -20,6 +21,8 @@ local_css("assets/style.css")
 # Initialize session state for upload history
 if 'upload_history' not in st.session_state:
     st.session_state.upload_history = []
+if 'analysis_results' not in st.session_state:
+    st.session_state.analysis_results = {}
 
 st.title("📄 ATS Resume Analyzer")
 st.markdown("""
@@ -30,7 +33,26 @@ st.markdown("""
 # Display upload history if exists
 if st.session_state.upload_history:
     st.markdown("#### 📊 Recent Uploads")
-    history_df = pd.DataFrame(st.session_state.upload_history)
+
+    # Create DataFrame with download buttons
+    history_data = []
+    for entry in st.session_state.upload_history:
+        history_data.append({
+            "filename": entry["filename"],
+            "timestamp": entry["timestamp"],
+            "score": entry["score"],
+            "download": f"""
+            <a href="data:text/plain;base64,{base64.b64encode(str(st.session_state.analysis_results.get(entry['filename'], {})).encode()).decode()}" 
+               download="{entry['filename']}_analysis.txt" 
+               style="text-decoration:none;">
+                <button style="background-color:#FF4B4B;color:white;padding:0.5rem 1rem;border:none;border-radius:4px;cursor:pointer;">
+                    📥 Download Report
+                </button>
+            </a>
+            """
+        })
+
+    history_df = pd.DataFrame(history_data)
     st.dataframe(
         history_df,
         column_config={
@@ -44,9 +66,16 @@ if st.session_state.upload_history:
                 min_value=0,
                 max_value=100,
                 format="%d%%"
+            ),
+            "download": st.column_config.Column(
+                "Download",
+                help="Download the analysis report",
+                width="medium"
             )
         },
-        hide_index=True
+        hide_index=True,
+        use_container_width=True,
+        html=True
     )
 
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
@@ -58,6 +87,9 @@ if uploaded_file is not None:
 
         # Analyze the content
         analysis_results = analyze_resume(resume_text)
+
+        # Store analysis results in session state
+        st.session_state.analysis_results[uploaded_file.name] = analysis_results
 
         # Add to upload history
         st.session_state.upload_history.append({
