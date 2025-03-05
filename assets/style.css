@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #262730;
+    color: #1A237E;
 }
 
 .app-description {
@@ -29,7 +29,7 @@
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 8px;
-    border-left: 4px solid #FF4B4B;
+    border-left: 4px solid #2196F3;
 }
 
 /* File uploader styling */
@@ -43,12 +43,12 @@
 }
 
 .uploadedFile:hover {
-    border-color: #FF4B4B;
+    border-color: #2196F3;
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background-color: rgb(75, 192, 192);
+    background-color: #2196F3;
 }
 
 /* Tab styling */
@@ -63,15 +63,15 @@
 .stTabs [data-baseweb="tab"] {
     height: 50px;
     white-space: pre-wrap;
-    background-color: #F0F2F6;
+    background-color: #F5F7FA;
     border-radius: 6px;
-    color: #262730;
+    color: #1A237E;
     padding: 1rem;
     transition: all 0.3s ease;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #FF4B4B15;
+    background-color: #E3F2FD;
 }
 
 /* Analysis section styling */
@@ -93,7 +93,7 @@
 }
 
 .hr-stats-container h3 {
-    color: #262730;
+    color: #1A237E;
     margin-bottom: 1.5rem;
     font-size: 1.3rem;
     font-weight: 600;
@@ -114,19 +114,19 @@
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #262730;
+    color: #1A237E;
     font-size: 1rem;
 }
 
 [data-testid="stMetricValue"] {
-    color: #FF4B4B;
+    color: #2196F3;
     font-size: 1.6rem !important;
     font-weight: 700;
 }
 
 /* Typography */
 h1, h2, h3 {
-    color: #262730;
+    color: #1A237E;
     font-weight: 600;
 }
 
