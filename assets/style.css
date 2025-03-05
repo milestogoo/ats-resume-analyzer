@@ -40,18 +40,23 @@
 }
 
 /* Download button styling */
-a[download] {
+.download-button {
     background-color: #FF4B4B;
-    color: white;
-    padding: 0.5rem 1rem;
+    color: white !important;
+    padding: 0.75rem 1.5rem;
     border-radius: 4px;
     text-decoration: none;
     margin-top: 1rem;
     display: inline-block;
+    text-align: center;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
 }
 
-a[download]:hover {
+.download-button:hover {
     background-color: #FF3333;
+    text-decoration: none;
 }
 
 /* Typography */
@@ -61,4 +66,12 @@ h1, h2, h3 {
 
 .stMarkdown p {
     color: #595959;
+}
+
+/* Download section styling */
+[data-testid="column"] {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 0.5rem;
 }
