@@ -7,7 +7,8 @@ class LinkedInOAuth:
     def __init__(self):
         self.client_id = os.getenv('LINKEDIN_CLIENT_ID')
         self.client_secret = os.getenv('LINKEDIN_CLIENT_SECRET')
-        self.redirect_uri = 'http://0.0.0.0:5000/callback'
+        # Use the Replit domain for the redirect URI
+        self.redirect_uri = f'https://{os.getenv("REPL_SLUG")}.{os.getenv("REPL_OWNER")}.repl.co'
         self.authorization_base_url = 'https://www.linkedin.com/oauth/v2/authorization'
         self.token_url = 'https://www.linkedin.com/oauth/v2/accessToken'
         self.scope = ['r_liteprofile', 'r_emailaddress']
@@ -33,10 +34,10 @@ class LinkedInOAuth:
         linkedin = OAuth2Session(self.client_id, token=token)
         profile_url = 'https://api.linkedin.com/v2/me'
         email_url = 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))'
-        
+
         profile = linkedin.get(profile_url).json()
         email = linkedin.get(email_url).json()
-        
+
         return {
             'firstName': profile.get('localizedFirstName', ''),
             'lastName': profile.get('localizedLastName', ''),

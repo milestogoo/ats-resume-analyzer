@@ -113,12 +113,14 @@ with col2:
         auth_url, state = linkedin_auth.get_auth_url()
         st.session_state.linkedin_oauth_state = state
         st.markdown(f'<a href="{auth_url}" target="_blank">Click here to authorize LinkedIn</a>', unsafe_allow_html=True)
+        st.info("After authorizing, you'll be redirected back to this page.")
 
 # Handle LinkedIn callback
 if 'code' in st.query_params:
     try:
         code = st.query_params['code']
-        token = linkedin_auth.fetch_token(code)
+        full_redirect_uri = f"{linkedin_auth.redirect_uri}?code={code}"
+        token = linkedin_auth.fetch_token(full_redirect_uri)
         profile_data = linkedin_auth.get_profile_data(token)
         st.success(f"Successfully imported profile for {profile_data['firstName']} {profile_data['lastName']}")
         # Process LinkedIn data here (Further implementation needed)
