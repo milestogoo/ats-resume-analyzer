@@ -27,12 +27,12 @@ local_css("assets/style.css")
 # Custom header with logo
 st.markdown("""
     <div class="header-container">
-        <div class="logo-title">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <rect width="40" height="40" rx="8" fill="#2196F3"/>
-                <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h1>ATS Resume Analyzer</h1>
+        <div class="logo-container">
+            <div class="logo-text">ATS</div>
+        </div>
+        <div class="title-container">
+            <h1 class="app-title">Resume Analyzer</h1>
+            <p class="app-subtitle">AI-Powered Resume Analysis & Optimization</p>
         </div>
     </div>
     """, unsafe_allow_html=True)

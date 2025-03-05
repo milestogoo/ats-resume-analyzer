@@ -9,21 +9,45 @@
     align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: #2196F3;
+    padding: 1.5rem;
+    background-color: #1A237E;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.logo-title {
+.logo-container {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    color: #FFFFFF;
+    gap: 1rem;
 }
 
-.logo-title h1 {
+.logo-text {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #FFD700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.app-title {
     color: #FFFFFF;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.app-subtitle {
+    color: #E3F2FD;
+    font-size: 1rem;
+    margin: 0;
 }
 
 .app-description {
@@ -166,7 +190,7 @@ h1, h2, h3 {
         background-color: #2d2d2d;
     }
 
-    [data-testid="stMetricLabel"], 
+    [data-testid="stMetricLabel"],
     [data-testid="stMetricValue"],
     .logo-title {
         color: #ffffff;
