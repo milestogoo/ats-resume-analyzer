@@ -3,7 +3,7 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #FFFFFF;
+    background-color: #F5F9FF;
 }
 
 /* Logo container styling */
@@ -17,59 +17,61 @@
 .logo-container svg {
     max-width: 250px;
     height: auto;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #1565C0;
+    border: 2px dashed #0277BD;
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
-    background-color: #F0F7FF;
+    background-color: #FFFFFF;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(2, 119, 189, 0.1);
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #1976D2;
-    background-color: #E3F2FD;
+    border-color: #01579B;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(2, 119, 189, 0.2);
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #1976D2, #0D47A1);
+    background: linear-gradient(90deg, #0277BD, #01579B);
     border-radius: 8px;
 }
 
 /* Tab styling */
 .stTabs [data-baseweb="tab-list"] {
     gap: 1rem;
-    background-color: #F0F7FF;
+    background-color: #FFFFFF;
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.1);
+    box-shadow: 0 2px 8px rgba(2, 119, 189, 0.1);
 }
 
 .stTabs [data-baseweb="tab"] {
     height: 50px;
     white-space: pre-wrap;
-    background-color: white;
+    background-color: #F5F9FF;
     border-radius: 8px;
-    color: #0D47A1;
+    color: #01579B;
     padding: 1rem 1.5rem;
     transition: all 0.3s ease;
-    border: 1px solid #1565C0;
+    border: 1px solid #E1F5FE;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #E3F2FD;
-    border-color: #1976D2;
+    background-color: #E1F5FE;
+    border-color: #0277BD;
 }
 
 .stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #1565C0;
+    background-color: #0277BD;
     color: white;
-    border-color: #1565C0;
+    border-color: #0277BD;
 }
 
 /* Analysis section styling */
@@ -78,20 +80,20 @@
     padding: 2rem;
     border-radius: 16px;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
 }
 
 /* HR Stats styling */
 .hr-stats-container {
-    background-color: #F0F7FF;
+    background-color: #FFFFFF;
     border-radius: 16px;
     padding: 2rem;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
 }
 
 .hr-stats-container h3 {
-    color: #0D47A1;
+    color: #01579B;
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: 600;
@@ -100,40 +102,41 @@
 
 /* Metric styling */
 [data-testid="stMetric"] {
-    background-color: white;
+    background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
     transition: transform 0.2s ease;
 }
 
 [data-testid="stMetric"]:hover {
     transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(2, 119, 189, 0.15);
 }
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #0D47A1;
+    color: #01579B;
     font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #1565C0;
+    color: #0277BD;
     font-size: 1.8rem !important;
     font-weight: 700;
 }
 
 /* Typography */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    color: #0D47A1;
+    color: #01579B;
     font-weight: 600;
     letter-spacing: 0.5px;
     margin-bottom: 1.5rem;
 }
 
 .stMarkdown p {
-    color: #1565C0;
+    color: #0277BD;
     line-height: 1.7;
     font-size: 1.1rem;
 }
@@ -145,47 +148,49 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown ul li {
-    background-color: #E3F2FD;
+    background-color: #F5F9FF;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     margin-bottom: 0.5rem;
-    color: #0D47A1;
+    color: #01579B;
     font-weight: 500;
+    border: 1px solid #E1F5FE;
 }
 
 /* Recent uploads table styling */
 [data-testid="stDataFrame"] {
-    background-color: white;
+    background-color: #FFFFFF;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+    box-shadow: 0 4px 12px rgba(2, 119, 189, 0.1);
 }
 
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
     .main {
-        background-color: #0A1929;
+        background-color: #002233;
     }
 
     .analysis-section, 
     .hr-stats-container,
     [data-testid="stMetric"] {
-        background-color: #132F4C;
+        background-color: #003355;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stFileUploader"] {
-        background-color: #132F4C;
-        border-color: #1565C0;
+        background-color: #003355;
+        border-color: #0277BD;
     }
 
     .stMarkdown p,
     [data-testid="stMetricLabel"] {
-        color: #90CAF9;
+        color: #81D4FA;
     }
 
     .stMarkdown ul li {
-        background-color: #1E4976;
-        color: #90CAF9;
+        background-color: #004466;
+        color: #81D4FA;
+        border-color: #0277BD;
     }
 }
