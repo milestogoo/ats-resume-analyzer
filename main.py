@@ -37,13 +37,6 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div class="app-description">
-        Upload your resume to check its ATS compliance and get detailed recommendations.
-        Supported formats: PDF, DOC, DOCX
-    </div>
-    """, unsafe_allow_html=True)
-
 # Display upload history if exists
 if st.session_state.upload_history:
     st.markdown("#### 📊 Recent Uploads")
@@ -97,6 +90,14 @@ if st.session_state.upload_history:
             </div>""",
             unsafe_allow_html=True
         )
+
+# File Upload Section
+st.markdown("""
+    <div class="app-description">
+        Upload your resume to check its ATS compliance and get detailed recommendations.
+        Supported formats: PDF, DOC, DOCX
+    </div>
+    """, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Choose your resume file", type=['pdf', 'doc', 'docx'])
 
@@ -242,6 +243,3 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"An error occurred while processing your file: {str(e)}")
-
-else:
-    st.info("Please upload a resume to begin the analysis.")
