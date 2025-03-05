@@ -216,11 +216,59 @@ with st.container():
                         st.markdown(f"• {detail}")
 
             with tabs[2]:
-                st.markdown("### Recommendations")
-                for category, recommendations in analysis_results['recommendations'].items():
-                    st.markdown(f"**{category}**")
-                    for rec in recommendations:
-                        st.markdown(f"• {rec}")
+                st.markdown("### 🎯 Recommendations for Improvement")
+
+                # High Priority Recommendations
+                if analysis_results['recommendations'].get("High Priority"):
+                    st.markdown("#### ⚠️ Critical Improvements Needed")
+                    for rec in analysis_results['recommendations']["High Priority"]:
+                        with st.expander(f"🔴 {rec['issue']}", expanded=True):
+                            st.markdown(f"""
+                            **Recommended Action:**  
+                            {rec['action']}
+
+                            **Expected Impact:**  
+                            {rec['impact']}
+                            """)
+
+                # Format Improvements
+                if analysis_results['recommendations'].get("Format Improvements"):
+                    st.markdown("#### 📝 Format Optimization")
+                    for rec in analysis_results['recommendations']["Format Improvements"]:
+                        with st.expander(f"🔸 {rec['issue']}", expanded=False):
+                            st.markdown(f"""
+                            **Recommended Action:**  
+                            {rec['action']}
+
+                            **Expected Impact:**  
+                            {rec['impact']}
+                            """)
+
+                # Content Enhancements
+                if analysis_results['recommendations'].get("Content Enhancements"):
+                    st.markdown("#### 📈 Content Enhancement")
+                    for rec in analysis_results['recommendations']["Content Enhancements"]:
+                        with st.expander(f"🔹 {rec['issue']}", expanded=False):
+                            st.markdown(f"""
+                            **Recommended Action:**  
+                            {rec['action']}
+
+                            **Expected Impact:**  
+                            {rec['impact']}
+                            """)
+
+                # Keyword Optimization
+                if analysis_results['recommendations'].get("Keyword Optimization"):
+                    st.markdown("#### 🎯 Keyword Optimization")
+                    for rec in analysis_results['recommendations']["Keyword Optimization"]:
+                        with st.expander(f"📌 {rec['issue']}", expanded=False):
+                            st.markdown(f"""
+                            **Recommended Action:**  
+                            {rec['action']}
+
+                            **Expected Impact:**  
+                            {rec['impact']}
+                            """)
 
             with tabs[3]:
                 st.markdown("### 📝 Raw Analysis Data")
