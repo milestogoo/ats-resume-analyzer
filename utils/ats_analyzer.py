@@ -1,4 +1,8 @@
 import re
+from utils.ml_scorer import MLScorer
+
+# Initialize ML scorer
+ml_scorer = MLScorer()
 
 def analyze_resume(text):
     """
@@ -9,14 +13,18 @@ def analyze_resume(text):
     content_score = analyze_content(text)
     keyword_score = analyze_keywords(text)
 
-    # Calculate overall score
-    overall_score = (format_score + content_score + keyword_score) / 3
+    # Get ML-based score
+    ml_score = ml_scorer.predict_score(text)
+
+    # Calculate overall score (25% each for format, content, keywords, and ML score)
+    overall_score = (format_score + content_score + keyword_score + ml_score) / 4
 
     # Generate section scores
     section_scores = {
         "Format": format_score,
         "Content": content_score,
-        "Keywords": keyword_score
+        "Keywords": keyword_score,
+        "ML Score": ml_score
     }
 
     # Format analysis
