@@ -2,6 +2,9 @@
 
 A modern, AI-powered Applicant Tracking System (ATS) compliance analyzer that helps job seekers optimize their resumes for better visibility and success.
 
+## Live Demo
+Access the live application at: [ATS Resume Analyzer](https://ats-resume-analyzer.replit.app)
+
 ## Features
 
 - 📄 Multi-format Resume Parsing (PDF, DOC, DOCX)
@@ -12,15 +15,7 @@ A modern, AI-powered Applicant Tracking System (ATS) compliance analyzer that he
 - 🔍 Keyword Optimization Suggestions
 - 🎨 Modern, Clean UI with Blue Theme
 
-## Tech Stack
-
-- **Frontend**: Streamlit
-- **Data Processing**: Python, Pandas
-- **PDF Processing**: PyPDF2
-- **Document Processing**: python-docx
-- **Visualization**: Plotly
-
-## Installation
+## Quick Start
 
 1. Clone the repository:
 ```bash
@@ -30,28 +25,13 @@ cd ats-resume-analyzer
 
 2. Install dependencies:
 ```bash
-pip install streamlit pandas plotly pypdf2 python-docx
+pip install -r requirements.txt
 ```
 
-3. Create the required directories:
-```bash
-mkdir -p .streamlit assets
-```
-
-4. Run the application:
+3. Run the application:
 ```bash
 streamlit run main.py
 ```
-
-## Usage
-
-1. Launch the application using `streamlit run main.py`
-2. Upload your resume in PDF, DOC, or DOCX format
-3. Review the comprehensive analysis including:
-   - Overall ATS compliance score
-   - Section-wise breakdown
-   - HR snapshot with experience and skills analysis
-   - Detailed recommendations for improvement
 
 ## Project Structure
 
@@ -62,6 +42,7 @@ streamlit run main.py
 ├── utils/
 │   ├── ats_analyzer.py   # Core analysis logic
 │   ├── file_parser.py    # File parsing utilities
+│   ├── pdf_generator.py  # PDF report generation
 │   └── visualizer.py     # Data visualization components
 ├── .streamlit/
 │   └── config.toml       # Streamlit configuration
@@ -95,14 +76,16 @@ streamlit run main.py
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## Support
 
-- Built with Streamlit
-- Styling inspired by modern design principles
-- Resume parsing based on industry standard ATS systems
+For support, please open an issue in the GitHub repository.
