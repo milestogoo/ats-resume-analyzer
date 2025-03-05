@@ -115,9 +115,9 @@ with col2:
         st.markdown(f'<a href="{auth_url}" target="_blank">Click here to authorize LinkedIn</a>', unsafe_allow_html=True)
 
 # Handle LinkedIn callback
-if 'code' in st.experimental_get_query_params():
+if 'code' in st.query_params:
     try:
-        code = st.experimental_get_query_params()['code'][0]
+        code = st.query_params['code']
         token = linkedin_auth.fetch_token(code)
         profile_data = linkedin_auth.get_profile_data(token)
         st.success(f"Successfully imported profile for {profile_data['firstName']} {profile_data['lastName']}")
