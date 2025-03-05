@@ -7,13 +7,25 @@ Access the live application at: [ATS Resume Analyzer](https://ats-resume-analyze
 
 ## Features
 
-- 📄 Multi-format Resume Parsing (PDF, DOC, DOCX)
+- 📄 Multi-format Resume Parsing (PDF/DOC/DOCX)
 - 📊 Comprehensive ATS Compliance Scoring
 - 🎯 Detailed Section-wise Analysis
 - 💼 HR Quick View with Experience & Skills Breakdown
 - 📈 Visual Compliance Metrics
 - 🔍 Keyword Optimization Suggestions
 - 🎨 Modern, Clean UI with Blue Theme
+
+## Dependencies
+
+Required Python packages:
+```
+streamlit
+pandas
+plotly
+pypdf2
+python-docx
+reportlab
+```
 
 ## Quick Start
 
@@ -25,7 +37,7 @@ cd ats-resume-analyzer
 
 2. Install dependencies:
 ```bash
-pip install -r requirements.txt
+pip install streamlit pandas plotly pypdf2 python-docx reportlab
 ```
 
 3. Run the application:
