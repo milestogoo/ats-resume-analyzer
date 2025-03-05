@@ -45,6 +45,42 @@ if uploaded_file is not None:
             st.subheader("Section-wise Breakdown")
             create_section_breakdown(analysis_results['section_scores'])
 
+        # HR Quick View
+        st.subheader("💼 HR Quick View")
+        hr_snapshot = analysis_results['hr_snapshot']
+
+        # Display Quick Stats in a modern card layout
+        st.markdown("""
+        <div class="hr-stats-container">
+            <h3>Quick Stats</h3>
+        </div>
+        """, unsafe_allow_html=True)
+
+        stats_cols = st.columns(4)
+        quick_stats = hr_snapshot['Quick Stats']
+
+        with stats_cols[0]:
+            st.metric("Experience", quick_stats['Experience Length'])
+        with stats_cols[1]:
+            st.metric("Education", quick_stats['Education Level'])
+        with stats_cols[2]:
+            st.metric("Key Skills", f"{quick_stats['Key Skills Count']} identified")
+        with stats_cols[3]:
+            st.metric("Leadership", quick_stats['Leadership Indicators'])
+
+        # Display Initial Impressions and Red Flags
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("#### ✅ Initial Impressions")
+            for impression in hr_snapshot['Initial Impressions']:
+                st.markdown(f"- {impression}")
+
+        with col2:
+            st.markdown("#### ⚠️ Potential Red Flags")
+            for flag in hr_snapshot['Potential Red Flags']:
+                st.markdown(f"- {flag}")
+
         # Detailed Analysis
         st.subheader("Detailed Analysis")
 

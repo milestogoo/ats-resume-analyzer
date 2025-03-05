@@ -39,6 +39,39 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
+/* HR Stats styling */
+.hr-stats-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hr-stats-container h3 {
+    color: #262730;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Metric styling */
+[data-testid="stMetric"] {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+[data-testid="stMetricLabel"] {
+    font-weight: 600;
+    color: #262730;
+}
+
+[data-testid="stMetricValue"] {
+    color: #FF4B4B;
+    font-size: 1.5rem !important;
+}
+
 /* Download button styling */
 .download-button {
     background-color: #FF4B4B;
