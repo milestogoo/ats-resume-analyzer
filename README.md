@@ -3,7 +3,7 @@
 A modern, AI-powered Applicant Tracking System (ATS) compliance analyzer that helps job seekers optimize their resumes for better visibility and success.
 
 ## Live Demo
-Access the live application at: [ATS Resume Analyzer](https://ats-resume-analyzer.replit.app)
+Access the live application at: [ATS Resume Analyzer](https://cv-scan-pro-jesudasjj.replit.app/)
 
 ## Features
 
