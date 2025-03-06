@@ -112,6 +112,32 @@ with st.container():
                 if st.session_state.is_first_upload:
                     st.session_state.is_first_upload = False
 
+                # Add CV Preview Panel
+                st.markdown("### 📄 CV Preview")
+                with st.expander("View Resume Content", expanded=True):
+                    # Create tabs for different views
+                    preview_tabs = st.tabs(["Formatted Text", "Raw Content"])
+
+                    with preview_tabs[0]:
+                        # Display formatted content with sections
+                        st.markdown("""
+                        <div style='background-color: white; padding: 20px; border-radius: 10px; border: 1px solid #E8EAF6;'>
+                            <h4 style='color: #283593;'>Parsed Content</h4>
+                        """, unsafe_allow_html=True)
+
+                        # Split content into sections based on common headers
+                        sections = resume_text.split('\n\n')
+                        for section in sections:
+                            if section.strip():
+                                st.markdown(f"<p style='color: #3F51B5; margin-bottom: 10px;'>{section}</p>", 
+                                          unsafe_allow_html=True)
+
+                        st.markdown("</div>", unsafe_allow_html=True)
+
+                    with preview_tabs[1]:
+                        # Display raw text content
+                        st.text_area("Raw Text", resume_text, height=300)
+
             # Results section with enhanced layout
             st.markdown("---")
             st.markdown("## 📊 Analysis Results")
