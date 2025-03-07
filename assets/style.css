@@ -109,7 +109,7 @@
     padding: 0.25rem 0.75rem;
     background: #E8EAF6;
     border-radius: 12px;
-    color: #283593;
+    color: #1A237E; /* Changed color for better contrast */
     font-weight: 500;
 }
 
@@ -128,7 +128,7 @@
 .role-category {
     display: inline-block;
     font-size: 0.9rem;
-    color: #3F51B5;
+    color: #1A237E; /* Changed color for better contrast */
     margin-right: 0.75rem;
     font-weight: 500;
 }
@@ -156,7 +156,7 @@
 }
 
 .job-meta {
-    color: #3F51B5;
+    color: #1A237E;
     font-size: 0.9rem;
     margin: 0;
     display: flex;
@@ -166,7 +166,7 @@
 }
 
 .job-date {
-    color: #3F51B5;
+    color: #1A237E;
     font-size: 0.85rem;
     margin: 0.25rem 0 0;
 }
@@ -178,7 +178,7 @@
 }
 
 .job-description {
-    color: #3F51B5;
+    color: #1A237E;
     font-size: 0.9rem;
     margin: 0 0 1rem;
     line-height: 1.5;
@@ -243,7 +243,7 @@
 .stTabs [data-baseweb="tab"] {
     height: 40px;
     white-space: pre-wrap;
-    background-color: #F3F6FF;
+    background-color: #FFFFFF;
     border-radius: 6px;
     color: #1A237E;
     padding: 0.5rem 1rem;
@@ -252,7 +252,7 @@
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #E8EAF6;
+    background-color: #F3F6FF;
     border-color: #3F51B5;
 }
 
@@ -281,7 +281,7 @@
 }
 
 .hr-stats-container h3 {
-    color: #283593;
+    color: #1A237E; /* Changed color for better contrast */
     margin-bottom: 1rem;
     font-size: 1.25rem;
     font-weight: 600;
@@ -304,13 +304,13 @@
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #283593;
+    color: #1A237E; /* Changed color for better contrast */
     font-size: 1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #3F51B5;
+    color: #1A237E; /* Changed color for better contrast */
     font-size: 1.5rem !important;
     font-weight: 700;
 }
@@ -324,7 +324,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown p {
-    color: #3F51B5;
+    color: #1A237E;
     line-height: 1.5;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -342,7 +342,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 0.25rem;
-    color: #283593;
+    color: #1A237E; /* Changed color for better contrast */
     font-weight: 500;
     border: 1px solid #E8EAF6;
 }
@@ -436,7 +436,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 [data-testid="stSidebar"] .stMarkdown h4 {
-    color: #3F51B5;
+    color: #1A237E;
     font-size: 1rem;
     margin: 1rem 0 0.5rem;
 }
@@ -469,7 +469,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMultiSelect > div[role="button"] {
-    background: #F3F6FF;
+    background: #FFFFFF;
     border: 1px solid #E3E3E3;
 }
 
@@ -482,7 +482,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown p {
-    color: #3F51B5;
+    color: #1A237E;
     line-height: 1.5;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -524,7 +524,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .metric-value {
-    color: #3F51B5;
+    color: #1A237E; /* Changed color for better contrast */
     margin: 0.25rem 0 0;
     font-size: 1.1rem;
     font-weight: 500;
@@ -550,7 +550,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 0.25rem;
-    color: #1A237E;
+    color: #1A237E; /* Changed color for better contrast */
     font-size: 0.9rem;
     border: 1px solid #E3E3E3;
 }
