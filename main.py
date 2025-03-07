@@ -129,15 +129,13 @@ with st.container():
                 # Add Extracted Roles Section with improved design
                 st.markdown("""
                     <div class='section-header'>
-                        <h3>👔 Detected Professional Roles</h3>
+                        <h3>👔 Professional Roles Analysis</h3>
                     </div>
                 """, unsafe_allow_html=True)
 
                 if extracted_roles:
                     # Create a modern role cards layout
-                    roles_html = """
-                    <div class='role-grid'>
-                    """
+                    roles_html = """<div class='role-grid'>"""
 
                     for role_info in extracted_roles:
                         # Define category-specific icons and colors
