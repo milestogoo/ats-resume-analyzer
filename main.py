@@ -126,41 +126,57 @@ with st.container():
                 if st.session_state.is_first_upload:
                     st.session_state.is_first_upload = False
 
-                # Add CV Preview Panel
-                st.markdown("### 📄 CV Preview")
-                with st.expander("View Resume Content", expanded=True):
-                    preview_tabs = st.tabs(["Formatted Text", "Raw Content"])
-
-                    with preview_tabs[0]:
-                        st.markdown("""
-                        <div style='background-color: white; padding: 20px; border-radius: 10px; border: 1px solid #E8EAF6;'>
-                            <h4 style='color: #283593;'>Parsed Content</h4>
-                        """, unsafe_allow_html=True)
-
-                        sections = resume_text.split('\n\n')
-                        for section in sections:
-                            if section.strip():
-                                st.markdown(f"<p style='color: #3F51B5; margin-bottom: 10px;'>{section}</p>", 
-                                          unsafe_allow_html=True)
-
-                        st.markdown("</div>", unsafe_allow_html=True)
-
-                    with preview_tabs[1]:
-                        st.text_area("Raw Text", resume_text, height=300)
-
-                # Add Extracted Roles Section
-                st.markdown("### 👔 Detected Roles")
-                role_cols = st.columns(len(extracted_roles) if extracted_roles else 1)
+                # Add Extracted Roles Section with improved design
+                st.markdown("### 👔 Detected Professional Roles")
 
                 if extracted_roles:
-                    for idx, role_info in enumerate(extracted_roles):
-                        with role_cols[idx]:
-                            st.markdown(f"""
-                            <div style='background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #E8EAF6;'>
-                                <h4 style='color: #283593; margin: 0;'>{role_info['role']}</h4>
-                                <p style='color: #3F51B5; margin: 5px 0;'>{role_info['category'].title()}</p>
+                    # Create a modern card layout for roles
+                    roles_html = """
+                    <div style='display: flex; flex-wrap: wrap; gap: 15px; margin: 10px 0;'>
+                    """
+
+                    for role_info in extracted_roles:
+                        # Define category-specific icons
+                        icons = {
+                            'engineering': '⚙️',
+                            'management': '👥',
+                            'data': '📊',
+                            'design': '🎨',
+                            'operations': '🔧'
+                        }
+                        icon = icons.get(role_info['category'].lower(), '💼')
+
+                        # Add role card with improved styling
+                        roles_html += f"""
+                        <div style='
+                            flex: 1;
+                            min-width: 200px;
+                            background-color: white;
+                            padding: 15px;
+                            border-radius: 8px;
+                            border: 1px solid #E8EAF6;
+                            box-shadow: 0 2px 4px rgba(63, 81, 181, 0.1);
+                            transition: transform 0.2s ease, box-shadow 0.2s ease;
+                        '>
+                            <div style='font-size: 24px; margin-bottom: 8px;'>{icon}</div>
+                            <h4 style='color: #283593; margin: 0; font-size: 16px; font-weight: 600;'>{role_info['role']}</h4>
+                            <p style='color: #3F51B5; margin: 5px 0; font-size: 14px;'>{role_info['category'].title()}</p>
+                            <div style='
+                                margin-top: 10px;
+                                padding: 4px 8px;
+                                background-color: #F3F6FF;
+                                border-radius: 4px;
+                                display: inline-block;
+                                font-size: 12px;
+                                color: #283593;
+                            '>
+                                {role_info['match_type'].title()} Match
                             </div>
-                            """, unsafe_allow_html=True)
+                        </div>
+                        """
+
+                    roles_html += "</div>"
+                    st.markdown(roles_html, unsafe_allow_html=True)
                 else:
                     st.info("No specific roles detected in the resume")
 
