@@ -137,7 +137,7 @@
 .job-card {
     background: #FFFFFF;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid #E3E3E3;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -158,7 +158,21 @@
 .job-meta {
     color: #3F51B5;
     font-size: 0.9rem;
-    margin: 0 0 0.75rem;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-date {
+    color: #666666;
+    font-size: 0.85rem;
+}
+
+.job-divider {
+    height: 1px;
+    background: #E3E3E3;
+    margin: 0.75rem 0;
 }
 
 .job-description {
@@ -174,6 +188,7 @@
     font-size: 0.9rem;
     font-weight: 500;
     transition: color 0.2s ease;
+    display: inline-block;
 }
 
 .job-link:hover {
@@ -217,10 +232,10 @@
     white-space: pre-wrap;
     background-color: #F3F6FF;
     border-radius: 6px;
-    color: #283593;
+    color: #1A237E;
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
-    border: 1px solid #E8EAF6;
+    border: 1px solid #E3E3E3;
 }
 
 .stTabs [data-baseweb="tab"]:hover {

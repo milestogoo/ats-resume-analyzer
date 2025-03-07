@@ -190,7 +190,6 @@ if uploaded_file is not None:
                     )
                     filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
 
-                    # Filter by selected roles if any are selected
                     if st.session_state.selected_roles:
                         filtered_jobs = [
                             job for job in filtered_jobs 
@@ -200,7 +199,7 @@ if uploaded_file is not None:
 
                     categorized_jobs = job_crawler.format_jobs_for_display(filtered_jobs)
 
-                    # Create tabs for each job category
+                    # Create tabs for job categories
                     job_tabs = st.tabs([cat.title() for cat in categorized_jobs.keys()])
 
                     for tab, (category, jobs) in zip(job_tabs, categorized_jobs.items()):
@@ -210,7 +209,11 @@ if uploaded_file is not None:
                                     st.markdown(f"""
                                     <div class='job-card'>
                                         <h4>{job['title']}</h4>
-                                        <p class='job-meta'>{job['company']} - {job['location']}</p>
+                                        <p class='job-meta'>
+                                            {job['company']} • {job['location']}
+                                            <span class='job-date'>Posted: {job['posted_date']}</span>
+                                        </p>
+                                        <div class='job-divider'></div>
                                         <p class='job-description'>{job['description']}</p>
                                         <a href='{job['url']}' target='_blank' class='job-link'>
                                             View Details →
