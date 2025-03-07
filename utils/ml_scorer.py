@@ -6,6 +6,10 @@ from sklearn.preprocessing import MinMaxScaler
 import pickle
 import os
 
+# Create NLTK data directory if it doesn't exist
+nltk_data_dir = os.path.expanduser('~/nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+
 # Define and download all required NLTK data
 required_nltk_data = [
     'punkt',
@@ -15,16 +19,15 @@ required_nltk_data = [
     'words'
 ]
 
-# Create NLTK data directory if it doesn't exist
-nltk_data_dir = os.path.expanduser('~/nltk_data')
-os.makedirs(nltk_data_dir, exist_ok=True)
-
 # Download required NLTK data
 for resource in required_nltk_data:
     try:
         nltk.download(resource, quiet=True, download_dir=nltk_data_dir)
     except Exception as e:
         print(f"Warning: Could not download {resource}: {str(e)}")
+
+# Ensure the download path is in NLTK's search path
+nltk.data.path.append(nltk_data_dir)
 
 class MLScorer:
     def __init__(self):
@@ -40,7 +43,7 @@ class MLScorer:
         )
         self.scaler = MinMaxScaler()
 
-        # Fit vectorizer with some sample text to avoid "not fitted" errors
+        # Fit vectorizer with some sample text
         sample_texts = [
             "experienced software engineer with python java",
             "project manager with agile methodology",
@@ -52,7 +55,7 @@ class MLScorer:
 
         # Initialize model with sample data
         sample_features = self.vectorizer.transform(sample_texts)
-        sample_scores = np.array([75.0, 80.0, 85.0, 70.0, 75.0])  # Sample scores
+        sample_scores = np.array([75.0, 80.0, 85.0, 70.0, 75.0])
         self.model.fit(sample_features, sample_scores)
 
         # Initialize scaler
@@ -64,29 +67,17 @@ class MLScorer:
             # Basic text cleaning
             text = text.lower().strip()
 
-            # Tokenize with error handling
-            try:
-                tokens = nltk.word_tokenize(text)
-            except Exception as e:
-                print(f"Tokenization error: {str(e)}")
-                tokens = text.split()
+            # Tokenize
+            tokens = nltk.word_tokenize(text)
 
-            # Remove stopwords with error handling
-            try:
-                stop_words = set(nltk.corpus.stopwords.words('english'))
-                tokens = [t for t in tokens if t not in stop_words]
-            except Exception as e:
-                print(f"Stopwords error: {str(e)}")
-                tokens = [t for t in tokens if len(t) > 2]
+            # Remove stopwords
+            stop_words = set(nltk.corpus.stopwords.words('english'))
+            tokens = [t for t in tokens if t not in stop_words]
 
-            # Get parts of speech with error handling
-            try:
-                pos_tags = nltk.pos_tag(tokens)
-            except Exception as e:
-                print(f"POS tagging error: {str(e)}")
-                pos_tags = [(token, 'NN') for token in tokens]  # Default to nouns
+            # Get parts of speech
+            pos_tags = nltk.pos_tag(tokens)
 
-            # Extract features with error handling
+            # Extract features
             features = {
                 'word_count': len(tokens),
                 'avg_word_length': np.mean([len(t) for t in tokens]) if tokens else 5.0,

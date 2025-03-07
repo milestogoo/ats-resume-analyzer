@@ -156,6 +156,15 @@ if uploaded_file is not None:
         # Show recent uploads in collapsible section
         if st.session_state.upload_history:
             with st.expander("📊 Recent Uploads", expanded=st.session_state.is_first_upload):
+                st.markdown("""
+                    <div style='padding: 1rem; background-color: #FFFFFF; border: 1px solid #E3E3E3; border-radius: 8px;'>
+                        <h4 style='color: #1A237E; margin-bottom: 1rem;'>Previous Analysis Reports</h4>
+                        <p style='color: #1A237E; font-size: 0.9rem;'>
+                            Click on any report to download and compare previous analyses.
+                        </p>
+                    </div>
+                """, unsafe_allow_html=True)
+
                 history_data = [{
                     "filename": entry["filename"],
                     "timestamp": entry["timestamp"],
@@ -277,7 +286,7 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
 
             # Display search criteria
-            
+
             st.markdown("---")
 
             with st.spinner("Searching for relevant jobs..."):
