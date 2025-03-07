@@ -6,28 +6,21 @@ from sklearn.preprocessing import MinMaxScaler
 import pickle
 import os
 
-# Create NLTK data directory if it doesn't exist
-nltk_data_dir = os.path.expanduser('~/nltk_data')
-os.makedirs(nltk_data_dir, exist_ok=True)
-
-# Define and download all required NLTK data
-required_nltk_data = [
+# Download all required NLTK data
+nltk_resources = [
     'punkt',
     'averaged_perceptron_tagger',
     'stopwords',
     'maxent_ne_chunker',
-    'words'
+    'words',
+    'tagsets'
 ]
 
-# Download required NLTK data
-for resource in required_nltk_data:
+for resource in nltk_resources:
     try:
-        nltk.download(resource, quiet=True, download_dir=nltk_data_dir)
+        nltk.download(resource, quiet=True)
     except Exception as e:
         print(f"Warning: Could not download {resource}: {str(e)}")
-
-# Ensure the download path is in NLTK's search path
-nltk.data.path.append(nltk_data_dir)
 
 class MLScorer:
     def __init__(self):
@@ -43,7 +36,7 @@ class MLScorer:
         )
         self.scaler = MinMaxScaler()
 
-        # Fit vectorizer with some sample text
+        # Fit vectorizer with some sample text to avoid "not fitted" errors
         sample_texts = [
             "experienced software engineer with python java",
             "project manager with agile methodology",
@@ -55,7 +48,7 @@ class MLScorer:
 
         # Initialize model with sample data
         sample_features = self.vectorizer.transform(sample_texts)
-        sample_scores = np.array([75.0, 80.0, 85.0, 70.0, 75.0])
+        sample_scores = np.array([75.0, 80.0, 85.0, 70.0, 75.0])  # Sample scores
         self.model.fit(sample_features, sample_scores)
 
         # Initialize scaler
@@ -64,32 +57,26 @@ class MLScorer:
     def preprocess_text(self, text):
         """Preprocess resume text for ML analysis"""
         try:
-            # Basic text cleaning
-            text = text.lower().strip()
-
             # Tokenize
-            tokens = nltk.word_tokenize(text)
-
+            tokens = nltk.word_tokenize(text.lower())
             # Remove stopwords
             stop_words = set(nltk.corpus.stopwords.words('english'))
             tokens = [t for t in tokens if t not in stop_words]
-
             # Get parts of speech
             pos_tags = nltk.pos_tag(tokens)
 
             # Extract features
             features = {
                 'word_count': len(tokens),
-                'avg_word_length': np.mean([len(t) for t in tokens]) if tokens else 5.0,
+                'avg_word_length': np.mean([len(t) for t in tokens]),
                 'noun_count': len([t for t, pos in pos_tags if pos.startswith('NN')]),
                 'verb_count': len([t for t, pos in pos_tags if pos.startswith('VB')]),
-                'number_count': len([t for t in tokens if any(c.isdigit() for c in t)])
+                'number_count': len([t for t in tokens if t.isdigit()]),
             }
 
             return ' '.join(tokens), features
-
         except Exception as e:
-            print(f"Error in text preprocessing: {str(e)}")
+            print(f"Warning: Error in text preprocessing: {str(e)}")
             # Return safe defaults
             return text.lower(), {
                 'word_count': len(text.split()),
@@ -118,7 +105,7 @@ class MLScorer:
 
             return tfidf_features, stat_features_array
         except Exception as e:
-            print(f"Error in feature extraction: {str(e)}")
+            print(f"Warning: Error in feature extraction: {str(e)}")
             # Return safe defaults
             return self.vectorizer.transform([""]), np.zeros((1, 5))
 
@@ -140,7 +127,7 @@ class MLScorer:
             return min(max(final_score, 0), 100)  # Ensure score is between 0 and 100
 
         except Exception as e:
-            print(f"Error in ML scoring: {str(e)}")
+            print(f"Warning: Error in ML scoring: {str(e)}")
             return 50  # Return neutral score on error
 
     def save_model(self, path='models'):
