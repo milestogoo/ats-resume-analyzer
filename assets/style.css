@@ -124,7 +124,6 @@
     flex: 1;
 }
 
-
 .role-category {
     display: inline-block;
     font-size: 0.9rem;
@@ -386,5 +385,91 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         background-color: #3F51B5;
         color: #C5CAE9;
         border-color: #3F51B5;
+    }
+}
+
+/* Add these styles at the end of the file */
+
+/* Sidebar styling */
+[data-testid="stSidebar"] {
+    background-color: #FFFFFF;
+    padding: 2rem 1rem;
+    border-right: 1px solid #E8EAF6;
+}
+
+[data-testid="stSidebar"] .stMarkdown h3 {
+    color: #283593;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E8EAF6;
+}
+
+[data-testid="stSidebar"] .stMarkdown h4 {
+    color: #3F51B5;
+    font-size: 1rem;
+    margin: 1rem 0 0.5rem;
+}
+
+/* Radio buttons styling */
+[data-testid="stRadio"] {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #E8EAF6;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stRadio"] label {
+    color: #283593 !important;
+    font-size: 0.9rem;
+}
+
+/* Multiselect styling */
+[data-testid="stMultiSelect"] {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #E8EAF6;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stMultiSelect"] label {
+    color: #283593 !important;
+    font-size: 0.9rem;
+}
+
+.stMultiSelect > div[role="button"] {
+    background: #F3F6FF;
+    border: 1px solid #E8EAF6;
+}
+
+/* Dark theme compatibility */
+@media (prefers-color-scheme: dark) {
+    [data-testid="stSidebar"] {
+        background-color: #1A237E;
+        border-right-color: #3F51B5;
+    }
+
+    [data-testid="stSidebar"] .stMarkdown h3,
+    [data-testid="stSidebar"] .stMarkdown h4 {
+        color: #C5CAE9;
+        border-bottom-color: #3F51B5;
+    }
+
+    [data-testid="stRadio"],
+    [data-testid="stMultiSelect"] {
+        background: #283593;
+        border-color: #3F51B5;
+    }
+
+    [data-testid="stRadio"] label,
+    [data-testid="stMultiSelect"] label {
+        color: #C5CAE9 !important;
+    }
+
+    .stMultiSelect > div[role="button"] {
+        background: #3F51B5;
+        border-color: #3F51B5;
+        color: #C5CAE9;
     }
 }
