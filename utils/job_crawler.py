@@ -216,3 +216,35 @@ class JobCrawler:
                 categorized['operations'].append(job)
 
         return categorized
+
+    def filter_jobs_by_date(self, jobs: List[Dict], filter_period: str) -> List[Dict]:
+        """
+        Filter jobs based on posting date
+        """
+        if filter_period == 'all':
+            return jobs
+
+        today = datetime.now()
+        filtered_jobs = []
+
+        for job in jobs:
+            try:
+                # Parse the job's posted date
+                posted_date = datetime.strptime(job['posted_date'], '%Y-%m-%d')
+
+                # Calculate days difference
+                days_old = (today - posted_date).days
+
+                # Apply filter based on period
+                if (filter_period == 'today' and days_old == 0) or \
+                   (filter_period == '3days' and days_old <= 3) or \
+                   (filter_period == '7days' and days_old <= 7) or \
+                   (filter_period == '21days' and days_old <= 21):
+                    filtered_jobs.append(job)
+            except Exception as e:
+                print(f"Error parsing date for job: {str(e)}")
+                # Include jobs with unparseable dates in all results
+                if filter_period == 'all':
+                    filtered_jobs.append(job)
+
+        return filtered_jobs

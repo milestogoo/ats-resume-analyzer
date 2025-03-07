@@ -30,6 +30,8 @@ if 'extracted_roles' not in st.session_state:
     st.session_state.extracted_roles = []
 if 'job_recommendations' not in st.session_state:
     st.session_state.job_recommendations = {}
+if 'job_filter_period' not in st.session_state:
+    st.session_state.job_filter_period = 'all'
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -165,9 +167,41 @@ with st.container():
                 # Add Job Recommendations
                 if extracted_roles:
                     st.markdown("### 💼 Job Recommendations")
+
+                    # Add filter buttons
+                    st.markdown("**🔍 Filter by posting date:**")
+                    filter_cols = st.columns(5)
+                    with filter_cols[0]:
+                        if st.button("All", type="secondary", 
+                                     use_container_width=True,
+                                     help="Show all job postings"):
+                            st.session_state.job_filter_period = 'all'
+                    with filter_cols[1]:
+                        if st.button("Today", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs posted today"):
+                            st.session_state.job_filter_period = 'today'
+                    with filter_cols[2]:
+                        if st.button("Last 3 Days", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 3 days"):
+                            st.session_state.job_filter_period = '3days'
+                    with filter_cols[3]:
+                        if st.button("Last Week", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 7 days"):
+                            st.session_state.job_filter_period = '7days'
+                    with filter_cols[4]:
+                        if st.button("Last 3 Weeks", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 21 days"):
+                            st.session_state.job_filter_period = '21days'
+
                     with st.spinner("Searching for relevant jobs..."):
                         jobs = job_crawler.search_jobs(search_keywords)
-                        categorized_jobs = job_crawler.format_jobs_for_display(jobs)
+                        # Filter jobs based on date
+                        filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
+                        categorized_jobs = job_crawler.format_jobs_for_display(filtered_jobs)
 
                         # Create tabs for each job category
                         job_tabs = st.tabs([cat.title() for cat in categorized_jobs.keys()])
