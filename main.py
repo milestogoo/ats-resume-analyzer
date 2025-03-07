@@ -191,7 +191,11 @@ if uploaded_file is not None:
             st.session_state.is_first_upload = False
 
         # Add HR Snapshot Section
-        st.markdown("### 📊 CV Snapshot")
+        st.markdown("""
+            <div class='section-header'>
+                <h3>📊 CV Snapshot</h3>
+            </div>
+        """, unsafe_allow_html=True)
 
         # Get HR snapshot data
         hr_snapshot = analysis_results['hr_snapshot']
@@ -226,7 +230,6 @@ if uploaded_file is not None:
         skills = quick_stats['Skills']
         if skills['Technical']:
             st.success(f"**Technical Expertise**: {', '.join(skills['Technical'][:5])}")
-
 
         # Achievements and Impact
         if hr_snapshot['Initial Impressions']:
