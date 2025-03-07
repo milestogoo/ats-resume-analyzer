@@ -1,6 +1,6 @@
 import requests
+import re
 from typing import List, Dict
-import json
 from datetime import datetime, timedelta
 import time
 import os
@@ -15,22 +15,66 @@ class JobCrawler:
             'linkedin': 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search'
         }
 
+        # Experience level mappings
+        self.experience_ranges = {
+            'entry': (0, 2),
+            'mid': (2, 5),
+            'senior': (5, 8),
+            'lead': (8, 12),
+            'director': (12, float('inf'))
+        }
+
         # Headers for different sites
         self.headers = {
             'indeed': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             },
             'naukri': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'appid': 109,
-                'systemid': 109
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'appid': '109',
+                'systemid': '109'
             },
             'linkedin': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
         }
 
-    def search_jobs(self, keywords: List[str], location: str = '') -> List[Dict]:
+    def detect_experience_level(self, title: str, description: str) -> str:
+        """Detect experience level from job title and description"""
+        text = f"{title} {description}".lower()
+
+        # Keywords indicating experience level
+        level_indicators = {
+            'director': ['director', 'vp', 'head of', 'chief'],
+            'lead': ['lead', 'principal', 'architect', 'manager'],
+            'senior': ['senior', 'sr.', 'experienced'],
+            'mid': ['mid level', 'mid-level', 'intermediate'],
+            'entry': ['entry level', 'junior', 'graduate', 'fresher']
+        }
+
+        # Check for explicit experience requirements
+        exp_pattern = r'(\d+)[\+\-]?\s*(?:to\s*(\d+))?\s*(?:years?|yrs?)'
+        exp_match = re.search(exp_pattern, text)
+        if exp_match:
+            min_exp = int(exp_match.group(1))
+            if min_exp >= 12:
+                return 'director'
+            elif min_exp >= 8:
+                return 'lead'
+            elif min_exp >= 5:
+                return 'senior'
+            elif min_exp >= 2:
+                return 'mid'
+            return 'entry'
+
+        # Check for level indicators in text
+        for level, keywords in level_indicators.items():
+            if any(keyword in text for keyword in keywords):
+                return level
+
+        return 'mid'  # Default to mid-level if no clear indicators
+
+    def search_jobs(self, keywords: List[str], location: str = '', experience_level: str = None) -> List[Dict]:
         """
         Search for jobs across multiple platforms
         Returns aggregated job listings
@@ -38,7 +82,6 @@ class JobCrawler:
         all_jobs = []
 
         for keyword in keywords:
-            # Add delay between requests
             time.sleep(1)
 
             try:
@@ -58,11 +101,19 @@ class JobCrawler:
                 print(f"Error searching for {keyword}: {str(e)}")
                 continue
 
+        # Add experience level to each job
+        for job in all_jobs:
+            job['experience_level'] = self.detect_experience_level(job['title'], job['description'])
+
+        # Filter by experience level if specified
+        if experience_level:
+            all_jobs = [job for job in all_jobs if job['experience_level'] == experience_level]
+
         # Remove duplicates and sort by date
         unique_jobs = self._deduplicate_jobs(all_jobs)
         sorted_jobs = sorted(unique_jobs, 
-                           key=lambda x: x.get('posted_date', ''), 
-                           reverse=True)
+                          key=lambda x: x.get('posted_date', ''), 
+                          reverse=True)
 
         return sorted_jobs[:50]  # Return top 50 most recent jobs
 

@@ -473,3 +473,98 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     background: #F3F6FF;
     border: 1px solid #E3E3E3;
 }
+
+/* Add to the existing CSS file */
+
+/* Metric card styling */
+.metric-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #E3E3E3;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+    font-size: 2rem;
+    line-height: 1;
+    color: #1A237E;
+}
+
+.metric-content {
+    flex: 1;
+}
+
+.metric-content h4 {
+    color: #1A237E;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.metric-value {
+    color: #3F51B5;
+    margin: 0.25rem 0 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Core competencies styling */
+.stMarkdown h3 {
+    color: #1A237E;
+    font-size: 1.2rem;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #E3E3E3;
+}
+
+.stMarkdown ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0.5rem 0;
+}
+
+.stMarkdown ul li {
+    background: #F3F6FF;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 0.25rem;
+    color: #1A237E;
+    font-size: 0.9rem;
+    border: 1px solid #E3E3E3;
+}
+
+/* Dark theme compatibility */
+@media (prefers-color-scheme: dark) {
+    .metric-card {
+        background: #1E1E1E;
+        border-color: #333333;
+    }
+
+    .metric-icon {
+        color: #90CAF9;
+    }
+
+    .metric-content h4 {
+        color: #FFFFFF;
+    }
+
+    .metric-value {
+        color: #90CAF9;
+    }
+
+    .stMarkdown ul li {
+        background: #1E1E1E;
+        color: #FFFFFF;
+        border-color: #333333;
+    }
+}
