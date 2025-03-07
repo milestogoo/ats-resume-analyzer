@@ -8,22 +8,56 @@
 
 /* Sidebar styling */
 [data-testid="stSidebar"] {
-    background-color: #F3F6FF !important;
-    border-right: 1px solid #E3E3E3;
+    background-color: #1A237E !important;
+    border-right: 1px solid #3F51B5;
+    padding: 1rem;
 }
 
 [data-testid="stSidebar"] .stMarkdown h3 {
-    color: #1A237E;
+    color: #FFFFFF !important;
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #E3E3E3;
+    border-bottom: 2px solid #3F51B5;
 }
 
 [data-testid="stSidebar"] .stMarkdown h4 {
-    color: #1A237E;
+    color: #FFFFFF !important;
     font-size: 1rem;
     margin: 1rem 0 0.5rem;
+}
+
+/* Radio buttons styling in sidebar */
+[data-testid="stSidebar"] [data-testid="stRadio"] {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #3F51B5;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    color: #FFFFFF !important;
+    font-size: 0.9rem;
+}
+
+/* Multiselect styling in sidebar */
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid #3F51B5;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] label {
+    color: #FFFFFF !important;
+    font-size: 0.9rem;
+}
+
+[data-testid="stSidebar"] .stMultiSelect > div[role="button"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #3F51B5;
+    color: #FFFFFF !important;
 }
 
 /* Radio buttons styling */
@@ -113,15 +147,15 @@
 /* Override any dark mode */
 @media (prefers-color-scheme: dark) {
     [data-testid="stSidebar"] {
-        background-color: #F3F6FF !important;
+        background-color: #1A237E !important;
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #FFFFFF !important;
     }
 
     .stApp > div:not([data-testid="stSidebar"]) {
         background-color: #FFFFFF !important;
-    }
-
-    * {
-        color: #1A237E !important;
     }
 }
 
@@ -456,11 +490,6 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         color: #1A237E !important;
     }
 }
-
-/* 442:.stMultiSelect > div[role="button"] {
-443:    background: #FFFFFF;
-444:    border: 1px solid #E3E3E3;
-445:}*/
 
 .stMultiSelect > div[role="button"] {
     background: #FFFFFF;
