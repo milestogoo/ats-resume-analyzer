@@ -46,9 +46,11 @@
 
 /* Radio buttons styling in sidebar */
 [data-testid="stSidebar"] [data-testid="stRadio"] {
-    background: transparent;
-    padding: 0.5rem;
+    background: #0A1A3B;
+    padding: 0.75rem;
     margin: 0.5rem 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 [data-testid="stSidebar"] [data-testid="stRadio"] label {
@@ -66,9 +68,11 @@
 
 /* Multiselect styling in sidebar */
 [data-testid="stSidebar"] [data-testid="stMultiSelect"] {
-    background: transparent;
-    padding: 0.5rem;
+    background: #0A1A3B;
+    padding: 0.75rem;
     margin: 0.5rem 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 [data-testid="stSidebar"] [data-testid="stMultiSelect"] label {
