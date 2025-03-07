@@ -20,6 +20,121 @@
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
+/* Section headers */
+.section-header {
+    margin: 1.5rem 0 1rem;
+}
+
+.section-header h3 {
+    color: #283593;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Role cards styling */
+.role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.role-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.role-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.role-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.role-content {
+    flex: 1;
+}
+
+.role-content h4 {
+    color: #283593;
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.role-category {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #3F51B5;
+    margin-right: 0.5rem;
+}
+
+.role-match {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: #E8EAF6;
+    border-radius: 4px;
+    color: #283593;
+}
+
+/* Job cards styling */
+.job-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #E8EAF6;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-card h4 {
+    color: #283593;
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.job-meta {
+    color: #3F51B5;
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+}
+
+.job-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+    line-height: 1.5;
+}
+
+.job-link {
+    color: #3F51B5;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.job-link:hover {
+    color: #283593;
+}
+
 /* File uploader styling */
 [data-testid="stFileUploader"] {
     border: 2px dashed #3F51B5;
@@ -173,10 +288,13 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         background-color: #1A237E;
     }
 
-    .analysis-section, 
-    .hr-stats-container,
-    [data-testid="stMetric"] {
+    .role-card,
+    .job-card,
+    [data-testid="stMetric"],
+    .analysis-section,
+    .hr-stats-container {
         background-color: #283593;
+        border-color: #3F51B5;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
@@ -185,8 +303,32 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         border-color: #3F51B5;
     }
 
+    .role-content h4,
+    .job-card h4,
     .stMarkdown p,
     [data-testid="stMetricLabel"] {
+        color: #C5CAE9;
+    }
+
+    .role-category,
+    .job-meta {
+        color: #C5CAE9;
+    }
+
+    .role-match {
+        background: #3F51B5;
+        color: #E8EAF6;
+    }
+
+    .job-description {
+        color: #C5CAE9;
+    }
+
+    .job-link {
+        color: #E8EAF6;
+    }
+
+    .job-link:hover {
         color: #C5CAE9;
     }
 
