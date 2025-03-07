@@ -223,8 +223,30 @@ if uploaded_file is not None:
 
         # Roles and Positions
         if st.session_state.extracted_roles:
-            roles_text = ", ".join([role['role'] for role in st.session_state.extracted_roles])
-            st.info(f"**Key Roles**: {roles_text}")
+            # Display search criteria with enhanced role information
+            st.markdown("#### 🎯 Search Profile")
+
+            # Sort roles to show current position first
+            current_roles = [role for role in extracted_roles if role.get('is_current', False)]
+            past_roles = [role for role in extracted_roles if not role.get('is_current', False)]
+
+            if current_roles:
+                st.markdown("**Current Position:**")
+                for role in current_roles:
+                    st.markdown(f"✨ **{role['role']}** ({role['category'].title()}, "
+                              f"{role['experience_level'].title()} level)")
+
+            if past_roles:
+                st.markdown("**Recent Relevant Experience:**")
+                for role in past_roles:
+                    year = role.get('year', '')
+                    year_text = f" ({year})" if year else ""
+                    st.markdown(f"• **{role['role']}**{year_text} - "
+                              f"{role['category'].title()}, "
+                              f"{role['experience_level'].title()} level")
+
+            st.markdown("---")
+
 
         # Skills Summary
         skills = quick_stats['Skills']
@@ -255,14 +277,7 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
 
             # Display search criteria
-            st.markdown("#### 🎯 Search Profile")
-            search_criteria = []
-            for role in extracted_roles:
-                search_criteria.append(
-                    f"- **{role['role']}** ({role['category'].title()}, "
-                    f"{role['experience_level'].title()} level)"
-                )
-            st.markdown("\n".join(search_criteria))
+            
             st.markdown("---")
 
             with st.spinner("Searching for relevant jobs..."):

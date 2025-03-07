@@ -31,52 +31,61 @@ class RoleExtractor:
         }
 
         # Flatten roles for easy searching
-        self.all_roles = [role.lower() for category in self.common_roles.values() 
+        self.all_roles = [role.lower() for category in self.common_roles.values()
                          for role in category]
 
     def extract_roles(self, text: str) -> List[Dict[str, str]]:
         """
-        Extract job roles from resume text with experience levels
-        Returns list of roles with their categories and experience levels
+        Extract job roles from resume text with experience levels and recency
         """
         found_roles = []
         text_lower = text.lower()
 
-        # Look for exact matches first
-        for category, roles in self.common_roles.items():
-            for role in roles:
-                role_lower = role.lower()
-                if role_lower in text_lower:
-                    # Get experience context
-                    exp_level = self._get_experience_level(text_lower, role_lower)
-                    found_roles.append({
-                        'role': role,
-                        'category': category,
-                        'match_type': 'exact',
-                        'experience_level': exp_level
-                    })
+        # Look for dates near role mentions to determine recency
+        date_pattern = r'(\d{4})\s*(?:-|to|–|present|current)'
+        dates = re.finditer(date_pattern, text)
+        current_year = 2025
 
-        # Look for partial matches using regex patterns
-        role_patterns = [
-            r'\b(senior|lead|principal|staff)\s+([a-z]+\s+)*engineer\b',
-            r'\b(technical|engineering|technology)\s+director\b',
-            r'\b(engineering|development|technical)\s+manager\b',
-            r'\b(senior|lead|principal)\s+architect\b'
-        ]
+        # Store positions with their dates
+        dated_positions = []
+        for date_match in dates:
+            year = int(date_match.group(1))
+            context_start = max(0, date_match.start() - 150)
+            context_end = min(len(text), date_match.start() + 150)
+            context = text[context_start:context_end].lower()
 
-        for pattern in role_patterns:
-            matches = re.finditer(pattern, text_lower)
-            for match in matches:
-                role = match.group(0).title()
-                category = self._categorize_role(role)
+            for category, roles in self.common_roles.items():
+                for role in roles:
+                    role_lower = role.lower()
+                    if role_lower in context:
+                        dated_positions.append({
+                            'role': role,
+                            'year': year,
+                            'category': category,
+                            'is_current': 'present' in context or 'current' in context,
+                            'relevance_score': self._calculate_relevance(role_lower, context)
+                        })
+
+        # Sort positions by recency and relevance
+        dated_positions.sort(key=lambda x: (x['is_current'], x['year'], x['relevance_score']), reverse=True)
+
+        # Take only the most recent and relevant roles (max 3)
+        processed_roles = set()
+        for position in dated_positions[:5]:  # Consider top 5 positions
+            if len(found_roles) >= 3:  # Limit to 3 roles
+                break
+
+            role = position['role']
+            if role.lower() not in processed_roles:
                 exp_level = self._get_experience_level(text_lower, role.lower())
-                if role.lower() not in [r['role'].lower() for r in found_roles]:
-                    found_roles.append({
-                        'role': role,
-                        'category': category,
-                        'match_type': 'pattern',
-                        'experience_level': exp_level
-                    })
+                found_roles.append({
+                    'role': role,
+                    'category': position['category'],
+                    'experience_level': exp_level,
+                    'is_current': position['is_current'],
+                    'year': position['year']
+                })
+                processed_roles.add(role.lower())
 
         return found_roles
 
@@ -174,3 +183,26 @@ class RoleExtractor:
                     keywords.append('Engineering Manager')
 
         return list(set(keywords))  # Remove duplicates
+
+    def _calculate_relevance(self, role: str, context: str) -> float:
+        """Calculate role relevance based on technical keywords and context"""
+        relevance_score = 0.0
+
+        # Modern technical keywords that indicate current relevance
+        tech_keywords = [
+            'cloud', 'aws', 'azure', 'gcp', 'kubernetes', 'docker',
+            'react', 'vue', 'angular', 'node.js', 'python', 'golang',
+            'machine learning', 'ai', 'data science', 'devops', 'mlops',
+            'microservices', 'serverless', 'full stack', 'blockchain'
+        ]
+
+        # Check for technical keywords in context
+        for keyword in tech_keywords:
+            if keyword in context:
+                relevance_score += 1.0
+
+        # Additional points for leadership roles
+        if any(word in role for word in ['lead', 'senior', 'architect', 'manager']):
+            relevance_score += 0.5
+
+        return relevance_score
