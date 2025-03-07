@@ -251,6 +251,17 @@ if uploaded_file is not None:
                 </div>
             """, unsafe_allow_html=True)
 
+            # Display search criteria
+            st.markdown("#### 🎯 Search Profile")
+            search_criteria = []
+            for role in extracted_roles:
+                search_criteria.append(
+                    f"- **{role['role']}** ({role['category'].title()}, "
+                    f"{role['experience_level'].title()} level)"
+                )
+            st.markdown("\n".join(search_criteria))
+            st.markdown("---")
+
             with st.spinner("Searching for relevant jobs..."):
                 jobs = job_crawler.search_jobs(
                     search_keywords,
