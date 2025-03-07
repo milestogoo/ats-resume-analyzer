@@ -166,7 +166,7 @@
 }
 
 .job-date {
-    color: #666666;
+    color: #3F51B5;
     font-size: 0.85rem;
     margin: 0.25rem 0 0;
 }
@@ -178,14 +178,14 @@
 }
 
 .job-description {
-    color: #333333;
+    color: #3F51B5;
     font-size: 0.9rem;
     margin: 0 0 1rem;
     line-height: 1.5;
 }
 
 .job-link {
-    color: #3F51B5;
+    color: #1A237E;
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
@@ -194,7 +194,7 @@
 }
 
 .job-link:hover {
-    color: #1A237E;
+    color: #3F51B5;
 }
 
 /* Job source label styling */
@@ -207,7 +207,6 @@
     font-size: 0.8rem;
     font-weight: 500;
 }
-
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
@@ -325,7 +324,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .stMarkdown p {
-    color: #333333;
+    color: #3F51B5;
     line-height: 1.5;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -474,7 +473,20 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     border: 1px solid #E3E3E3;
 }
 
-/* Add to the existing CSS file */
+/* Typography */
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: #1A237E;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.stMarkdown p {
+    color: #3F51B5;
+    line-height: 1.5;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
 
 /* Metric card styling */
 .metric-card {

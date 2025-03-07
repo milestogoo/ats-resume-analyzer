@@ -187,173 +187,129 @@ if uploaded_file is not None:
                     use_container_width=True
                 )
 
-            if st.session_state.is_first_upload:
-                st.session_state.is_first_upload = False
+        if st.session_state.is_first_upload:
+            st.session_state.is_first_upload = False
 
-            # Add HR Snapshot Section
+        # Add HR Snapshot Section
+        st.markdown("### 📊 CV Snapshot")
+
+        # Get HR snapshot data
+        hr_snapshot = analysis_results['hr_snapshot']
+        quick_stats = hr_snapshot['Quick Stats']
+
+        # Display key metrics in columns
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Experience", quick_stats['Experience'])
+
+        with col2:
+            edu_details = quick_stats['Education']
+            if isinstance(edu_details, dict):
+                edu_text = f"{edu_details['level']} in {edu_details['major']}"
+            else:
+                edu_text = edu_details
+            st.metric("Education", edu_text)
+
+        with col3:
+            st.metric("Leadership Level", quick_stats['Leadership Indicators'])
+
+        # Professional Summary
+        st.markdown("#### Professional Profile")
+
+        # Roles and Positions
+        if st.session_state.extracted_roles:
+            roles_text = ", ".join([role['role'] for role in st.session_state.extracted_roles])
+            st.info(f"**Key Roles**: {roles_text}")
+
+        # Skills Summary
+        skills = quick_stats['Skills']
+        if skills['Technical']:
+            st.success(f"**Technical Expertise**: {', '.join(skills['Technical'][:5])}")
+
+
+        # Achievements and Impact
+        if hr_snapshot['Initial Impressions']:
+            st.success("**Key Achievements**")
+            for impression in hr_snapshot['Initial Impressions']:
+                st.markdown(f"✓ {impression}")
+
+        # Areas for Improvement
+        if hr_snapshot['Potential Red Flags']:
+            st.warning("**Areas for Enhancement**")
+            for flag in hr_snapshot['Potential Red Flags']:
+                st.markdown(f"• {flag}")
+
+        st.markdown("---")
+
+
+        # Add Job Recommendations
+        if extracted_roles:
             st.markdown("""
                 <div class='section-header'>
-                    <h3>👔 HR Quick View</h3>
+                    <h3>💼 Job Recommendations</h3>
                 </div>
             """, unsafe_allow_html=True)
 
-            # Get HR snapshot data
-            hr_snapshot = analysis_results['hr_snapshot']
-            quick_stats = hr_snapshot['Quick Stats']
+            with st.spinner("Searching for relevant jobs..."):
+                jobs = job_crawler.search_jobs(
+                    search_keywords,
+                    location=", ".join(st.session_state.selected_countries)
+                )
+                filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
 
-            # Create three columns for key metrics
-            col1, col2, col3 = st.columns(3)
+                # Filter by selected sources
+                filtered_jobs = [
+                    job for job in filtered_jobs
+                    if job['source'] in st.session_state.selected_sources
+                ]
 
-            with col1:
-                st.markdown("""
-                    <div class='metric-card'>
-                        <div class='metric-icon'>⏳</div>
-                        <div class='metric-content'>
-                            <h4>Experience</h4>
-                            <p class='metric-value'>{}</p>
-                        </div>
-                    </div>
-                """.format(quick_stats['Experience']), unsafe_allow_html=True)
-
-            with col2:
-                edu_details = quick_stats['Education']
-                if isinstance(edu_details, dict):
-                    edu_text = f"{edu_details['level']} in {edu_details['major']}"
-                else:
-                    edu_text = edu_details
-                st.markdown("""
-                    <div class='metric-card'>
-                        <div class='metric-icon'>🎓</div>
-                        <div class='metric-content'>
-                            <h4>Education</h4>
-                            <p class='metric-value'>{}</p>
-                        </div>
-                    </div>
-                """.format(edu_text), unsafe_allow_html=True)
-
-            with col3:
-                st.markdown("""
-                    <div class='metric-card'>
-                        <div class='metric-icon'>👥</div>
-                        <div class='metric-content'>
-                            <h4>Leadership Level</h4>
-                            <p class='metric-value'>{}</p>
-                        </div>
-                    </div>
-                """.format(quick_stats['Leadership Indicators']), unsafe_allow_html=True)
-
-            # Skills and competencies
-            st.markdown("### 🎯 Core Competencies")
-            skills = quick_stats['Skills']
-            skill_cols = st.columns(3)
-
-            with skill_cols[0]:
-                st.markdown("**💻 Technical Skills**")
-                if skills['Technical']:
-                    st.markdown("\n".join([f"- {skill.title()}" for skill in skills['Technical']]))
-                else:
-                    st.info("No technical skills identified")
-
-            with skill_cols[1]:
-                st.markdown("**🤝 Soft Skills**")
-                if skills['Soft Skills']:
-                    st.markdown("\n".join([f"- {skill.title()}" for skill in skills['Soft Skills']]))
-                else:
-                    st.info("No soft skills identified")
-
-            with skill_cols[2]:
-                st.markdown("**🔧 Tools & Platforms**")
-                if skills['Tools']:
-                    st.markdown("\n".join([f"- {tool.title()}" for tool in skills['Tools']]))
-                else:
-                    st.info("No tools/platforms identified")
-
-            # Key Highlights
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("### ✨ Key Highlights")
-                if hr_snapshot['Initial Impressions']:
-                    for impression in hr_snapshot['Initial Impressions']:
-                        st.markdown(f"✓ {impression}")
-                else:
-                    st.info("No key highlights identified")
-
-            with col2:
-                st.markdown("### ⚠️ Areas for Review")
-                if hr_snapshot['Potential Red Flags']:
-                    for flag in hr_snapshot['Potential Red Flags']:
-                        st.markdown(f"• {flag}")
-                else:
-                    st.success("No significant concerns identified")
-
-
-            # Add Job Recommendations
-            if extracted_roles:
-                st.markdown("""
-                    <div class='section-header'>
-                        <h3>💼 Job Recommendations</h3>
-                    </div>
-                """, unsafe_allow_html=True)
-
-                with st.spinner("Searching for relevant jobs..."):
-                    jobs = job_crawler.search_jobs(
-                        search_keywords,
-                        location=", ".join(st.session_state.selected_countries)
-                    )
-                    filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
-
-                    # Filter by selected sources
+                if st.session_state.selected_roles:
                     filtered_jobs = [
                         job for job in filtered_jobs
-                        if job['source'] in st.session_state.selected_sources
+                        if any(role.lower() in job['title'].lower()
+                                  for role in st.session_state.selected_roles)
                     ]
 
-                    if st.session_state.selected_roles:
-                        filtered_jobs = [
-                            job for job in filtered_jobs
-                            if any(role.lower() in job['title'].lower()
-                                      for role in st.session_state.selected_roles)
-                        ]
+                categorized_jobs = job_crawler.format_jobs_for_display(filtered_jobs)
 
-                    categorized_jobs = job_crawler.format_jobs_for_display(filtered_jobs)
+                # Create tabs for job categories
+                job_tabs = st.tabs([cat.title() for cat in categorized_jobs.keys()])
 
-                    # Create tabs for job categories
-                    job_tabs = st.tabs([cat.title() for cat in categorized_jobs.keys()])
+                for tab, (category, jobs) in zip(job_tabs, categorized_jobs.items()):
+                    with tab:
+                        if jobs:
+                            for job in jobs:
+                                st.markdown(f"""
+                                <div class='job-card'>
+                                    <h4>{job['title']}</h4>
+                                    <p class='job-meta'>
+                                        {job['company']} • {job['location']}
+                                        <span class='job-source'>{job['source']}</span>
+                                        <span class='job-date'>Posted: {job['posted_date']}</span>
+                                    </p>
+                                    <div class='job-divider'></div>
+                                    <p class='job-description'>{job['description']}</p>
+                                    <a href='{job['url']}' target='_blank' class='job-link'>
+                                        View Details →
+                                    </a>
+                                </div>
+                                """, unsafe_allow_html=True)
+                        else:
+                            st.info(f"No {category} jobs found")
 
-                    for tab, (category, jobs) in zip(job_tabs, categorized_jobs.items()):
-                        with tab:
-                            if jobs:
-                                for job in jobs:
-                                    st.markdown(f"""
-                                    <div class='job-card'>
-                                        <h4>{job['title']}</h4>
-                                        <p class='job-meta'>
-                                            {job['company']} • {job['location']}
-                                            <span class='job-source'>{job['source']}</span>
-                                            <span class='job-date'>Posted: {job['posted_date']}</span>
-                                        </p>
-                                        <div class='job-divider'></div>
-                                        <p class='job-description'>{job['description']}</p>
-                                        <a href='{job['url']}' target='_blank' class='job-link'>
-                                            View Details →
-                                        </a>
-                                    </div>
-                                    """, unsafe_allow_html=True)
-                            else:
-                                st.info(f"No {category} jobs found")
+        # Results section
+        st.markdown("---")
+        st.markdown("## 📊 Analysis Results")
 
-            # Results section
-            st.markdown("---")
-            st.markdown("## 📊 Analysis Results")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("### Overall ATS Compliance")
+            create_score_chart(analysis_results['overall_score'])
 
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("### Overall ATS Compliance")
-                create_score_chart(analysis_results['overall_score'])
-
-            with col2:
-                st.markdown("### Detailed Breakdown")
-                create_section_breakdown(analysis_results['section_scores'])
+        with col2:
+            st.markdown("### Detailed Breakdown")
+            create_section_breakdown(analysis_results['section_scores'])
 
     except Exception as e:
         st.error(f"An error occurred while processing your file: {str(e)}")
