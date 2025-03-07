@@ -36,6 +36,9 @@ if 'selected_countries' not in st.session_state:
     st.session_state.selected_countries = ['India']
 if 'selected_roles' not in st.session_state:
     st.session_state.selected_roles = []
+if 'selected_sources' not in st.session_state:
+    st.session_state.selected_sources = ['Indeed', 'Naukri', 'LinkedIn']
+
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -75,6 +78,18 @@ with st.sidebar:
         options=countries,
         default=['India'],
         key="country_filter",
+        label_visibility="collapsed"
+    )
+
+    # Source filter
+    st.markdown("#### 🔗 Job Sources")
+    sources = ['Indeed', 'Naukri', 'LinkedIn']
+    
+    st.session_state.selected_sources = st.multiselect(
+        "Select job sources",
+        options=sources,
+        default=sources,
+        key="source_filter",
         label_visibility="collapsed"
     )
 
@@ -190,6 +205,12 @@ if uploaded_file is not None:
                     )
                     filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
 
+                    # Filter by selected sources
+                    filtered_jobs = [
+                        job for job in filtered_jobs 
+                        if job['source'] in st.session_state.selected_sources
+                    ]
+
                     if st.session_state.selected_roles:
                         filtered_jobs = [
                             job for job in filtered_jobs 
@@ -211,6 +232,7 @@ if uploaded_file is not None:
                                         <h4>{job['title']}</h4>
                                         <p class='job-meta'>
                                             {job['company']} • {job['location']}
+                                            <span class='job-source'>{job['source']}</span>
                                             <span class='job-date'>Posted: {job['posted_date']}</span>
                                         </p>
                                         <div class='job-divider'></div>

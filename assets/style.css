@@ -162,11 +162,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .job-date {
     color: #666666;
     font-size: 0.85rem;
+    margin: 0.25rem 0 0;
 }
 
 .job-divider {
@@ -194,6 +196,18 @@
 .job-link:hover {
     color: #1A237E;
 }
+
+/* Job source label styling */
+.job-source {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #F3F6FF;
+    border-radius: 4px;
+    color: #1A237E;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
@@ -399,6 +413,10 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     .stMultiSelect > div[role="button"] {
         background: #1E1E1E;
         border-color: #333333;
+        color: #FFFFFF;
+    }
+    .job-source {
+        background-color: #1A237E;
         color: #FFFFFF;
     }
 }
