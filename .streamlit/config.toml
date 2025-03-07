@@ -6,9 +6,6 @@ port = 5000
 [theme]
 primaryColor = "#1A237E"
 backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F3F6FF"
+secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1A237E"
 font = "sans serif"
-
-[browser]
-gatherUsageStats = false
