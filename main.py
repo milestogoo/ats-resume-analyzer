@@ -3,8 +3,14 @@ import pandas as pd
 from utils.file_parser import parse_resume
 from utils.ats_analyzer import analyze_resume
 from utils.visualizer import create_score_chart, create_section_breakdown
+from utils.role_extractor import RoleExtractor
+from utils.job_crawler import JobCrawler
 from datetime import datetime
 import base64
+
+# Initialize components
+role_extractor = RoleExtractor()
+job_crawler = JobCrawler()
 
 st.set_page_config(
     page_title="ATS Resume Analyzer",
@@ -20,6 +26,10 @@ if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = {}
 if 'is_first_upload' not in st.session_state:
     st.session_state.is_first_upload = True
+if 'extracted_roles' not in st.session_state:
+    st.session_state.extracted_roles = []
+if 'job_recommendations' not in st.session_state:
+    st.session_state.job_recommendations = {}
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -27,7 +37,7 @@ def local_css(file_name):
 
 local_css("assets/style.css")
 
-# Display enhanced logo using SVG
+# Display logo
 st.markdown("""
     <div class="logo-container">
         <svg width="250" height="100" viewBox="0 0 250 100">
@@ -52,9 +62,8 @@ st.markdown("""
 
 # Main container
 with st.container():
-    # Upload section with improved styling
+    # Upload section
     st.markdown("### 📤 Upload Your Resume")
-
     uploaded_file = st.file_uploader("", type=['pdf', 'doc', 'docx'])
 
     if uploaded_file is not None:
@@ -64,6 +73,10 @@ with st.container():
                 resume_text, file_format = parse_resume(uploaded_file)
                 analysis_results = analyze_resume(resume_text)
 
+                # Extract roles and search for jobs
+                extracted_roles = role_extractor.extract_roles(resume_text)
+                search_keywords = role_extractor.get_search_keywords(extracted_roles)
+
                 # Store results
                 st.session_state.analysis_results[uploaded_file.name] = analysis_results
                 st.session_state.upload_history.append({
@@ -72,10 +85,10 @@ with st.container():
                     "score": analysis_results['overall_score']
                 })
                 st.session_state.upload_history = st.session_state.upload_history[-5:]
+                st.session_state.extracted_roles = extracted_roles
 
             # Show recent uploads in collapsible section
             if st.session_state.upload_history:
-                # Expand the panel on first upload
                 with st.expander("📊 Recent Uploads", expanded=st.session_state.is_first_upload):
                     history_data = [{
                         "filename": entry["filename"],
@@ -108,24 +121,20 @@ with st.container():
                         use_container_width=True
                     )
 
-                # Set first upload to false after showing the expanded panel
                 if st.session_state.is_first_upload:
                     st.session_state.is_first_upload = False
 
                 # Add CV Preview Panel
                 st.markdown("### 📄 CV Preview")
                 with st.expander("View Resume Content", expanded=True):
-                    # Create tabs for different views
                     preview_tabs = st.tabs(["Formatted Text", "Raw Content"])
 
                     with preview_tabs[0]:
-                        # Display formatted content with sections
                         st.markdown("""
                         <div style='background-color: white; padding: 20px; border-radius: 10px; border: 1px solid #E8EAF6;'>
                             <h4 style='color: #283593;'>Parsed Content</h4>
                         """, unsafe_allow_html=True)
 
-                        # Split content into sections based on common headers
                         sections = resume_text.split('\n\n')
                         for section in sections:
                             if section.strip():
@@ -135,10 +144,50 @@ with st.container():
                         st.markdown("</div>", unsafe_allow_html=True)
 
                     with preview_tabs[1]:
-                        # Display raw text content
                         st.text_area("Raw Text", resume_text, height=300)
 
-            # Results section with enhanced layout
+                # Add Extracted Roles Section
+                st.markdown("### 👔 Detected Roles")
+                role_cols = st.columns(len(extracted_roles) if extracted_roles else 1)
+
+                if extracted_roles:
+                    for idx, role_info in enumerate(extracted_roles):
+                        with role_cols[idx]:
+                            st.markdown(f"""
+                            <div style='background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #E8EAF6;'>
+                                <h4 style='color: #283593; margin: 0;'>{role_info['role']}</h4>
+                                <p style='color: #3F51B5; margin: 5px 0;'>{role_info['category'].title()}</p>
+                            </div>
+                            """, unsafe_allow_html=True)
+                else:
+                    st.info("No specific roles detected in the resume")
+
+                # Add Job Recommendations
+                if extracted_roles:
+                    st.markdown("### 💼 Job Recommendations")
+                    with st.spinner("Searching for relevant jobs..."):
+                        jobs = job_crawler.search_jobs(search_keywords)
+                        categorized_jobs = job_crawler.format_jobs_for_display(jobs)
+
+                        # Create tabs for each job category
+                        job_tabs = st.tabs([cat.title() for cat in categorized_jobs.keys()])
+
+                        for tab, (category, jobs) in zip(job_tabs, categorized_jobs.items()):
+                            with tab:
+                                if jobs:
+                                    for job in jobs:
+                                        st.markdown(f"""
+                                        <div style='background-color: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #E8EAF6;'>
+                                            <h4 style='color: #283593; margin: 0;'>{job['title']}</h4>
+                                            <p style='color: #3F51B5; margin: 5px 0;'>{job['company']} - {job['location']}</p>
+                                            <p style='color: #666; font-size: 0.9em;'>{job['description']}</p>
+                                            <a href='{job['url']}' target='_blank' style='color: #3F51B5;'>View Details →</a>
+                                        </div>
+                                        """, unsafe_allow_html=True)
+                                else:
+                                    st.info(f"No {category} jobs found")
+
+            # Results section
             st.markdown("---")
             st.markdown("## 📊 Analysis Results")
 
