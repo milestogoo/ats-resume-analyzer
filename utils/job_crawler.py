@@ -10,8 +10,8 @@ import urllib.parse
 class JobCrawler:
     def __init__(self):
         self.base_urls = {
-            'indeed': 'https://api.indeed.com/ads/apisearch',
-            'naukri': 'https://www.naukri.com/jobapi/v3/search',
+            'indeed': 'https://www.indeed.com/jobs',
+            'naukri': 'https://www.naukri.com/jobs',
             'linkedin': 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search'
         }
 
@@ -24,19 +24,9 @@ class JobCrawler:
             'director': (12, float('inf'))
         }
 
-        # Headers for different sites
+        # Headers for web scraping
         self.headers = {
-            'indeed': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            },
-            'naukri': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'appid': '109',
-                'systemid': '109'
-            },
-            'linkedin': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
 
     def detect_experience_level(self, title: str, description: str) -> str:
@@ -75,31 +65,33 @@ class JobCrawler:
         return 'mid'  # Default to mid-level if no clear indicators
 
     def search_jobs(self, keywords: List[str], location: str = '', experience_level: str = None) -> List[Dict]:
-        """
-        Search for jobs across multiple platforms
-        Returns aggregated job listings
-        """
+        """Search for jobs across multiple platforms"""
         all_jobs = []
 
         for keyword in keywords:
-            time.sleep(1)
-
             try:
-                # Indeed Jobs
-                indeed_jobs = self._search_indeed_jobs(keyword, location)
-                all_jobs.extend(indeed_jobs)
-
-                # Naukri Jobs
-                naukri_jobs = self._search_naukri_jobs(keyword, location)
-                all_jobs.extend(naukri_jobs)
-
-                # LinkedIn Jobs
+                # LinkedIn Jobs (most reliable API)
                 linkedin_jobs = self._search_linkedin_jobs(keyword, location)
                 all_jobs.extend(linkedin_jobs)
+
+                # Use web scraping for Indeed and Naukri as fallback
+                try:
+                    indeed_jobs = self._scrape_indeed_jobs(keyword, location)
+                    all_jobs.extend(indeed_jobs)
+                except Exception as e:
+                    print(f"Indeed scraping error: {str(e)}")
+
+                try:
+                    naukri_jobs = self._scrape_naukri_jobs(keyword, location)
+                    all_jobs.extend(naukri_jobs)
+                except Exception as e:
+                    print(f"Naukri scraping error: {str(e)}")
 
             except Exception as e:
                 print(f"Error searching for {keyword}: {str(e)}")
                 continue
+
+            time.sleep(1)  # Respect rate limits
 
         # Add experience level to each job
         for job in all_jobs:
@@ -117,73 +109,75 @@ class JobCrawler:
 
         return sorted_jobs[:50]  # Return top 50 most recent jobs
 
-    def _search_indeed_jobs(self, keyword: str, location: str) -> List[Dict]:
-        """Search Indeed Jobs"""
-        try:
-            params = {
-                'q': keyword,
-                'l': location,
-                'format': 'json',
-                'limit': 25,
-                'fromage': 30,  # Last 30 days
-                'sort': 'date'
-            }
+    def _scrape_indeed_jobs(self, keyword: str, location: str) -> List[Dict]:
+        """Scrape Indeed jobs using web scraping"""
+        jobs = []
+        encoded_keyword = urllib.parse.quote(keyword)
+        encoded_location = urllib.parse.quote(location)
 
-            response = requests.get(
-                'https://api.indeed.com/v2/search',
-                params=params,
-                headers=self.headers['indeed']
-            )
+        url = f"https://www.indeed.com/jobs?q={encoded_keyword}&l={encoded_location}"
+        response = requests.get(url, headers=self.headers)
 
-            if response.status_code == 200:
-                jobs = response.json().get('results', [])
-                return [{
-                    'title': job['title'],
-                    'company': job['company'],
-                    'location': job.get('location', 'Not specified'),
-                    'url': job['url'],
-                    'posted_date': job.get('date', ''),
-                    'source': 'Indeed',
-                    'description': job.get('snippet', '')[:200] + '...'
-                } for job in jobs]
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            job_cards = soup.find_all('div', class_='job_seen_beacon')
 
-        except Exception as e:
-            print(f"Indeed Jobs API error: {str(e)}")
-        return []
+            for card in job_cards[:10]:  # Limit to 10 jobs per search
+                try:
+                    title = card.find('h2', class_='jobTitle').text.strip()
+                    company = card.find('span', class_='companyName').text.strip()
+                    location = card.find('div', class_='companyLocation').text.strip()
+                    description = card.find('div', class_='job-snippet').text.strip()
 
-    def _search_naukri_jobs(self, keyword: str, location: str) -> List[Dict]:
-        """Search Naukri Jobs"""
-        try:
-            params = {
-                'noOfResults': 25,
-                'urlType': 'search_by_keyword',
-                'searchType': 'adv',
-                'keyword': keyword,
-                'location': location,
-                'sort': 'r'  # Sort by relevance
-            }
+                    jobs.append({
+                        'title': title,
+                        'company': company,
+                        'location': location,
+                        'description': description[:200] + '...',
+                        'url': 'https://www.indeed.com' + card.find('a')['href'],
+                        'source': 'Indeed',
+                        'posted_date': datetime.now().strftime('%Y-%m-%d')
+                    })
+                except Exception as e:
+                    print(f"Error parsing Indeed job card: {str(e)}")
+                    continue
 
-            response = requests.get(
-                self.base_urls['naukri'],
-                params=params,
-                headers=self.headers['naukri']
-            )
+        return jobs
 
-            if response.status_code == 200:
-                jobs = response.json().get('jobDetails', [])
-                return [{
-                    'title': job['title'],
-                    'company': job['companyName'],
-                    'location': job.get('location', 'Not specified'),
-                    'url': job['jobUrl'],
-                    'posted_date': job.get('createdDate', ''),
-                    'source': 'Naukri',
-                    'description': job.get('jobDescription', '')[:200] + '...'
-                } for job in jobs]
+    def _scrape_naukri_jobs(self, keyword: str, location: str) -> List[Dict]:
+        """Scrape Naukri jobs using web scraping"""
+        jobs = []
+        encoded_keyword = urllib.parse.quote(keyword)
+        encoded_location = urllib.parse.quote(location)
 
-        except Exception as e:
-            print(f"Naukri Jobs API error: {str(e)}")
-        return []
+        url = f"https://www.naukri.com/{encoded_keyword}-jobs-in-{encoded_location}"
+        response = requests.get(url, headers=self.headers)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            job_cards = soup.find_all('article', class_='jobTuple')
+
+            for card in job_cards[:10]:  # Limit to 10 jobs per search
+                try:
+                    title = card.find('a', class_='title').text.strip()
+                    company = card.find('a', class_='subTitle').text.strip()
+                    location = card.find('li', class_='location').text.strip()
+                    description = card.find('div', class_='job-description').text.strip()
+
+                    jobs.append({
+                        'title': title,
+                        'company': company,
+                        'location': location,
+                        'description': description[:200] + '...',
+                        'url': card.find('a', class_='title')['href'],
+                        'source': 'Naukri',
+                        'posted_date': datetime.now().strftime('%Y-%m-%d')
+                    })
+                except Exception as e:
+                    print(f"Error parsing Naukri job card: {str(e)}")
+                    continue
+
+        return jobs
 
     def _search_linkedin_jobs(self, keyword: str, location: str) -> List[Dict]:
         """Search LinkedIn Jobs"""
@@ -192,14 +186,14 @@ class JobCrawler:
             encoded_location = urllib.parse.quote(location) if location else ''
 
             url = f"https://www.linkedin.com/jobs/search?keywords={encoded_keyword}&location={encoded_location}"
-            response = requests.get(url, headers=self.headers['linkedin'])
+            response = requests.get(url, headers=self.headers)
 
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 job_cards = soup.find_all('div', class_='base-card')
 
                 jobs = []
-                for card in job_cards:
+                for card in job_cards[:10]:  # Limit to 10 jobs per search
                     try:
                         title = card.find('h3', class_='base-search-card__title').text.strip()
                         company = card.find('h4', class_='base-search-card__subtitle').text.strip()
@@ -219,10 +213,10 @@ class JobCrawler:
                         print(f"Error parsing LinkedIn job card: {str(e)}")
                         continue
 
-                return jobs[:25]  # Return top 25 results
+                return jobs
 
         except Exception as e:
-            print(f"LinkedIn Jobs API error: {str(e)}")
+            print(f"LinkedIn Jobs error: {str(e)}")
         return []
 
     def _deduplicate_jobs(self, jobs: List[Dict]) -> List[Dict]:
@@ -239,10 +233,7 @@ class JobCrawler:
         return unique_jobs
 
     def format_jobs_for_display(self, jobs: List[Dict]) -> Dict[str, List[Dict]]:
-        """
-        Format jobs by category for display
-        Returns dict with jobs grouped by category
-        """
+        """Format jobs by category for display"""
         categorized = {
             'engineering': [],
             'management': [],
@@ -269,9 +260,7 @@ class JobCrawler:
         return categorized
 
     def filter_jobs_by_date(self, jobs: List[Dict], filter_period: str) -> List[Dict]:
-        """
-        Filter jobs based on posting date
-        """
+        """Filter jobs based on posting date"""
         if filter_period == 'all':
             return jobs
 
@@ -280,13 +269,9 @@ class JobCrawler:
 
         for job in jobs:
             try:
-                # Parse the job's posted date
                 posted_date = datetime.strptime(job['posted_date'], '%Y-%m-%d')
-
-                # Calculate days difference
                 days_old = (today - posted_date).days
 
-                # Apply filter based on period
                 if (filter_period == 'today' and days_old == 0) or \
                    (filter_period == '3days' and days_old <= 3) or \
                    (filter_period == '7days' and days_old <= 7) or \
@@ -294,7 +279,6 @@ class JobCrawler:
                     filtered_jobs.append(job)
             except Exception as e:
                 print(f"Error parsing date for job: {str(e)}")
-                # Include jobs with unparseable dates in all results
                 if filter_period == 'all':
                     filtered_jobs.append(job)
 
