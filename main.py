@@ -129,7 +129,7 @@ with st.container():
                 # Add Extracted Roles Section with improved design
                 st.markdown("""
                     <div class='section-header'>
-                        <h3>👔 Professional Roles Analysis</h3>
+                        <h3>👔 Professional Role Analysis</h3>
                     </div>
                 """, unsafe_allow_html=True)
 
@@ -137,29 +137,53 @@ with st.container():
                     # Create a modern role cards layout
                     roles_html = """<div class='role-grid'>"""
 
+                    # Group roles by category for better organization
+                    categorized_roles = {}
                     for role_info in extracted_roles:
-                        # Define category-specific icons and colors
-                        category_styles = {
-                            'engineering': {'icon': '⚙️', 'color': '#3F51B5'},
-                            'management': {'icon': '👥', 'color': '#673AB7'},
-                            'data': {'icon': '📊', 'color': '#2196F3'},
-                            'design': {'icon': '🎨', 'color': '#009688'},
-                            'operations': {'icon': '🔧', 'color': '#4CAF50'}
-                        }
+                        category = role_info['category'].lower()
+                        if category not in categorized_roles:
+                            categorized_roles[category] = []
+                        categorized_roles[category].append(role_info)
 
-                        style = category_styles.get(role_info['category'].lower(), 
-                                                  {'icon': '💼', 'color': '#3F51B5'})
+                    # Define category order and styles
+                    category_order = ['engineering', 'management', 'data', 'design', 'operations']
+                    category_styles = {
+                        'engineering': {'icon': '⚙️', 'color': '#3F51B5', 'title': 'Engineering Roles'},
+                        'management': {'icon': '👥', 'color': '#673AB7', 'title': 'Management Roles'},
+                        'data': {'icon': '📊', 'color': '#2196F3', 'title': 'Data Roles'},
+                        'design': {'icon': '🎨', 'color': '#009688', 'title': 'Design Roles'},
+                        'operations': {'icon': '🔧', 'color': '#4CAF50', 'title': 'Operations Roles'}
+                    }
 
-                        roles_html += f"""
-                        <div class='role-card' style='border-left: 4px solid {style["color"]}'>
-                            <div class='role-icon'>{style['icon']}</div>
-                            <div class='role-content'>
-                                <h4>{role_info['role']}</h4>
-                                <span class='role-category'>{role_info['category'].title()}</span>
-                                <span class='role-match'>{role_info['match_type'].title()} Match</span>
+                    # Generate role cards by category
+                    for category in category_order:
+                        if category in categorized_roles and categorized_roles[category]:
+                            style = category_styles[category]
+                            roles = categorized_roles[category]
+
+                            roles_html += f"""
+                            <div class='category-group' style='border-color: {style["color"]}'>
+                                <div class='category-header'>
+                                    <span class='category-icon'>{style['icon']}</span>
+                                    <h4>{style['title']}</h4>
+                                </div>
+                                <div class='roles-container'>
+                            """
+
+                            for role_info in roles:
+                                roles_html += f"""
+                                <div class='role-card' style='border-left: 4px solid {style["color"]}'>
+                                    <div class='role-content'>
+                                        <h4>{role_info['role']}</h4>
+                                        <span class='role-match'>{role_info['match_type'].title()} Match</span>
+                                    </div>
+                                </div>
+                                """
+
+                            roles_html += """
+                                </div>
                             </div>
-                        </div>
-                        """
+                            """
 
                     roles_html += "</div>"
                     st.markdown(roles_html, unsafe_allow_html=True)

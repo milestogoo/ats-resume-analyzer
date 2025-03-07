@@ -34,26 +34,82 @@
 
 /* Role cards styling */
 .role-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     margin: 1rem 0;
+}
+
+.category-group {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #E8EAF6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #E8EAF6;
+}
+
+.category-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.category-header h4 {
+    color: #283593;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.roles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
 }
 
 .role-card {
     background: white;
     border-radius: 8px;
-    padding: 1.25rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .role-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.role-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.role-content h4 {
+    color: #283593;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.role-match {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    background: #E8EAF6;
+    border-radius: 12px;
+    color: #283593;
+    font-weight: 500;
 }
 
 .role-icon {
@@ -68,29 +124,12 @@
     flex: 1;
 }
 
-.role-content h4 {
-    color: #283593;
-    margin: 0 0 0.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.3;
-}
 
 .role-category {
     display: inline-block;
     font-size: 0.9rem;
     color: #3F51B5;
     margin-right: 0.75rem;
-    font-weight: 500;
-}
-
-.role-match {
-    display: inline-block;
-    font-size: 0.8rem;
-    padding: 0.25rem 0.75rem;
-    background: #E8EAF6;
-    border-radius: 12px;
-    color: #283593;
     font-weight: 500;
 }
 
@@ -298,13 +337,15 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     .job-card,
     [data-testid="stMetric"],
     .analysis-section,
-    .hr-stats-container {
+    .hr-stats-container,
+    .category-group {
         background-color: #283593;
         border-color: #3F51B5;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .role-icon {
+    .role-icon,
+    .category-header {
         background: #3F51B5;
     }
 
@@ -318,11 +359,13 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     .stMarkdown p,
     [data-testid="stMetricLabel"],
     .role-category,
-    .job-meta {
+    .job-meta,
+    .category-header h4 {
         color: #C5CAE9;
     }
 
-    .role-match {
+    .role-match,
+    .category-header {
         background: #3F51B5;
         color: #E8EAF6;
     }
