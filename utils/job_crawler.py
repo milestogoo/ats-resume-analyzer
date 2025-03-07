@@ -104,8 +104,8 @@ class JobCrawler:
         # Remove duplicates and sort by date
         unique_jobs = self._deduplicate_jobs(all_jobs)
         sorted_jobs = sorted(unique_jobs, 
-                          key=lambda x: x.get('posted_date', ''), 
-                          reverse=True)
+                              key=lambda x: x.get('posted_date', ''), 
+                              reverse=True)
 
         return sorted_jobs[:50]  # Return top 50 most recent jobs
 
@@ -115,32 +115,65 @@ class JobCrawler:
         encoded_keyword = urllib.parse.quote(keyword)
         encoded_location = urllib.parse.quote(location)
 
-        url = f"https://www.indeed.com/jobs?q={encoded_keyword}&l={encoded_location}"
-        response = requests.get(url, headers=self.headers)
+        url = f"https://www.indeed.com/jobs?q={encoded_keyword}&l={encoded_location}&sort=date"
+        print(f"Scraping Indeed URL: {url}")  # Debug log
 
-        if response.status_code == 200:
+        try:
+            response = requests.get(url, headers=self.headers, timeout=10)
+            response.raise_for_status()  # Raise exception for bad status codes
+
             soup = BeautifulSoup(response.text, 'html.parser')
-            job_cards = soup.find_all('div', class_='job_seen_beacon')
+            # Updated selectors for Indeed's current HTML structure
+            job_cards = soup.select('div.job_seen_beacon, div.cardOutline')
+
+            print(f"Found {len(job_cards)} job cards on Indeed")  # Debug log
 
             for card in job_cards[:10]:  # Limit to 10 jobs per search
                 try:
-                    title = card.find('h2', class_='jobTitle').text.strip()
-                    company = card.find('span', class_='companyName').text.strip()
-                    location = card.find('div', class_='companyLocation').text.strip()
-                    description = card.find('div', class_='job-snippet').text.strip()
+                    # Updated selectors with multiple fallbacks
+                    title = (
+                        card.select_one('h2.jobTitle span[title]')
+                        or card.select_one('h2.jobTitle')
+                        or card.select_one('h2.title')
+                    )
+                    company = (
+                        card.select_one('span.companyName')
+                        or card.select_one('div.company')
+                    )
+                    location = (
+                        card.select_one('div.companyLocation')
+                        or card.select_one('div.location')
+                    )
+                    description = (
+                        card.select_one('div.job-snippet')
+                        or card.select_one('div.summary')
+                    )
+
+                    if not all([title, company, location, description]):
+                        print(f"Missing required elements for job card")  # Debug log
+                        continue
+
+                    link = card.select_one('a[data-jk]') or card.select_one('a.jcs-JobTitle')
+                    job_url = 'https://www.indeed.com' + (link['href'] if link else '')
 
                     jobs.append({
-                        'title': title,
-                        'company': company,
-                        'location': location,
-                        'description': description[:200] + '...',
-                        'url': 'https://www.indeed.com' + card.find('a')['href'],
+                        'title': title.text.strip(),
+                        'company': company.text.strip(),
+                        'location': location.text.strip(),
+                        'description': description.text.strip()[:200] + '...',
+                        'url': job_url,
                         'source': 'Indeed',
                         'posted_date': datetime.now().strftime('%Y-%m-%d')
                     })
+                    print(f"Successfully parsed job: {title.text.strip()}")  # Debug log
                 except Exception as e:
                     print(f"Error parsing Indeed job card: {str(e)}")
                     continue
+
+        except requests.RequestException as e:
+            print(f"Error fetching Indeed jobs: {str(e)}")
+        except Exception as e:
+            print(f"Unexpected error scraping Indeed: {str(e)}")
 
         return jobs
 
