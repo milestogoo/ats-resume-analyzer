@@ -3,7 +3,66 @@
     padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #FFFFFF;
+    background-color: #FFFFFF !important;
+}
+
+/* Force white backgrounds */
+.stApp,
+[data-testid="stSidebar"],
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stMarkdown"] {
+    background-color: #FFFFFF !important;
+}
+
+/* Card and container styles */
+.job-card, 
+.metric-card,
+.category-group,
+[data-testid="stMetric"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E3E3E3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Base text colors */
+.stMarkdown p,
+.job-meta,
+.job-description,
+.metric-value,
+[data-testid="stMetricLabel"],
+[data-testid="stMetricValue"] {
+    color: #1A237E !important;
+}
+
+/* Tab styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.5rem;
+    background-color: #FFFFFF !important;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 40px;
+    white-space: pre-wrap;
+    background-color: #FFFFFF !important;
+    border-radius: 6px;
+    color: #1A237E;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid #E3E3E3;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    background-color: #F3F6FF !important;
+    border-color: #3F51B5;
+}
+
+.stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
+    background-color: #1A237E !important;
+    color: #FFFFFF;
+    border-color: #3F51B5;
 }
 
 /* Logo container styling */
@@ -109,7 +168,7 @@
     padding: 0.25rem 0.75rem;
     background: #E8EAF6;
     border-radius: 12px;
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     font-weight: 500;
 }
 
@@ -128,7 +187,7 @@
 .role-category {
     display: inline-block;
     font-size: 0.9rem;
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     margin-right: 0.75rem;
     font-weight: 500;
 }
@@ -231,36 +290,6 @@
     border-radius: 6px;
 }
 
-/* Tab styling */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 0.5rem;
-    background-color: #FFFFFF;
-    padding: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
-}
-
-.stTabs [data-baseweb="tab"] {
-    height: 40px;
-    white-space: pre-wrap;
-    background-color: #FFFFFF;
-    border-radius: 6px;
-    color: #1A237E;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    border: 1px solid #E3E3E3;
-}
-
-.stTabs [data-baseweb="tab"]:hover {
-    background-color: #F3F6FF;
-    border-color: #3F51B5;
-}
-
-.stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #3F51B5;
-    color: white;
-    border-color: #3F51B5;
-}
 
 /* Analysis section styling */
 .analysis-section {
@@ -281,7 +310,7 @@
 }
 
 .hr-stats-container h3 {
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     margin-bottom: 1rem;
     font-size: 1.25rem;
     font-weight: 600;
@@ -304,13 +333,13 @@
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     font-size: 1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     font-size: 1.5rem !important;
     font-weight: 700;
 }
@@ -342,7 +371,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 0.25rem;
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     font-weight: 500;
     border: 1px solid #E8EAF6;
 }
@@ -355,78 +384,20 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
 }
 
-/* Dark theme compatibility */
+/* Override any dark mode */
 @media (prefers-color-scheme: dark) {
-    .main {
-        background-color: #121212;
+    body, .stApp {
+        background-color: #FFFFFF !important;
+        color: #1A237E !important;
     }
 
-    .role-card,
-    .job-card,
-    [data-testid="stMetric"],
-    .analysis-section,
-    .hr-stats-container,
-    .category-group {
-        background-color: #1E1E1E;
-        border-color: #333333;
-    }
-
-    [data-testid="stSidebar"] {
-        background-color: #121212;
-        border-right-color: #333333;
-    }
-
-    .role-content h4,
-    .job-card h4,
-    .stMarkdown p,
-    [data-testid="stMetricLabel"],
-    .role-category,
-    .job-meta,
-    .category-header h4 {
-        color: #FFFFFF;
-    }
-
-    .job-description {
-        color: #CCCCCC;
-    }
-
-    .job-link {
-        color: #90CAF9;
-    }
-
-    .job-link:hover {
-        color: #BBDEFB;
-    }
-
-    [data-testid="stRadio"],
-    [data-testid="stMultiSelect"] {
-        background: #1E1E1E;
-        border-color: #333333;
-    }
-
-    [data-testid="stRadio"] label,
-    [data-testid="stMultiSelect"] label {
-        color: #FFFFFF !important;
-    }
-
-    .stMultiSelect > div[role="button"] {
-        background: #1E1E1E;
-        border-color: #333333;
-        color: #FFFFFF;
-    }
-    .job-source {
-        background-color: #1A237E;
-        color: #FFFFFF;
+    * {
+        background-color: #FFFFFF !important;
+        color: #1A237E !important;
     }
 }
 
 /* Sidebar styling */
-[data-testid="stSidebar"] {
-    background-color: #FFFFFF;
-    padding: 2rem 1rem;
-    border-right: 1px solid #E3E3E3;
-}
-
 [data-testid="stSidebar"] .stMarkdown h3 {
     color: #1A237E;
     font-size: 1.2rem;
@@ -524,7 +495,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 
 .metric-value {
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     margin: 0.25rem 0 0;
     font-size: 1.1rem;
     font-weight: 500;
@@ -550,33 +521,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 0.25rem;
-    color: #1A237E; /* Changed color for better contrast */
+    color: #1A237E;
     font-size: 0.9rem;
     border: 1px solid #E3E3E3;
-}
-
-/* Dark theme compatibility */
-@media (prefers-color-scheme: dark) {
-    .metric-card {
-        background: #1E1E1E;
-        border-color: #333333;
-    }
-
-    .metric-icon {
-        color: #90CAF9;
-    }
-
-    .metric-content h4 {
-        color: #FFFFFF;
-    }
-
-    .metric-value {
-        color: #90CAF9;
-    }
-
-    .stMarkdown ul li {
-        background: #1E1E1E;
-        color: #FFFFFF;
-        border-color: #333333;
-    }
 }
