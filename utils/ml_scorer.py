@@ -1,58 +1,32 @@
 import nltk
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import MinMaxScaler
 import pickle
 import os
 
 # Download all required NLTK data
-nltk_resources = [
-    'punkt',
-    'averaged_perceptron_tagger',
-    'stopwords',
-    'maxent_ne_chunker',
-    'words',
-    'tagsets'
-]
-
-for resource in nltk_resources:
-    try:
-        nltk.download(resource, quiet=True)
-    except Exception as e:
-        print(f"Warning: Could not download {resource}: {str(e)}")
+try:
+    nltk.download('punkt', quiet=True)
+    nltk.download('averaged_perceptron_tagger', quiet=True)
+    nltk.download('stopwords', quiet=True)
+    nltk.download('punkt_tab', quiet=True)
+except Exception as e:
+    print(f"Warning: Some NLTK resources couldn't be downloaded: {str(e)}")
 
 class MLScorer:
     def __init__(self):
-        # Initialize with some basic training data
         self.vectorizer = TfidfVectorizer(
             max_features=1000,
             stop_words='english',
             ngram_range=(1, 2)
         )
-        self.model = RandomForestRegressor(
+        self.model = RandomForestClassifier(
             n_estimators=100,
             random_state=42
         )
         self.scaler = MinMaxScaler()
-
-        # Fit vectorizer with some sample text to avoid "not fitted" errors
-        sample_texts = [
-            "experienced software engineer with python java",
-            "project manager with agile methodology",
-            "data scientist machine learning expert",
-            "marketing specialist with digital expertise",
-            "sales representative with customer service"
-        ]
-        self.vectorizer.fit(sample_texts)
-
-        # Initialize model with sample data
-        sample_features = self.vectorizer.transform(sample_texts)
-        sample_scores = np.array([75.0, 80.0, 85.0, 70.0, 75.0])  # Sample scores
-        self.model.fit(sample_features, sample_scores)
-
-        # Initialize scaler
-        self.scaler.fit([[0, 0, 0, 0, 0], [100, 20, 50, 30, 20]])
 
     def preprocess_text(self, text):
         """Preprocess resume text for ML analysis"""
@@ -80,7 +54,7 @@ class MLScorer:
             # Return safe defaults
             return text.lower(), {
                 'word_count': len(text.split()),
-                'avg_word_length': 5.0,
+                'avg_word_length': 5.0,  # reasonable default
                 'noun_count': 0,
                 'verb_count': 0,
                 'number_count': 0
@@ -115,8 +89,8 @@ class MLScorer:
             # Extract features
             tfidf_features, stat_features = self.extract_features(text)
 
-            # Make prediction using regression model
-            tfidf_score = self.model.predict(tfidf_features)[0]
+            # Make prediction
+            tfidf_score = self.model.predict_proba(tfidf_features)[0][1]
 
             # Scale statistical features
             scaled_stats = self.scaler.transform(stat_features)

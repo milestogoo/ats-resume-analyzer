@@ -1,198 +1,191 @@
 /* Main container styling */
 .main {
-    padding: 1rem;
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #F3F6FF;
+    background-color: #FFFFFF;
 }
 
 /* Logo container styling */
 .logo-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem;
+    margin-bottom: 3rem;
+    padding: 1rem;
 }
 
 .logo-container svg {
-    max-width: 200px;
+    max-width: 250px;
     height: auto;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 /* File uploader styling */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #3F51B5;
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 1rem 0;
-    background-color: #FFFFFF;
+    border: 2px dashed #1565C0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    background-color: #F0F7FF;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.1);
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #283593;
-    background-color: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.2);
+    border-color: #1976D2;
+    background-color: #E3F2FD;
 }
 
 /* Score displays */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #3F51B5, #283593);
-    border-radius: 6px;
+    background: linear-gradient(90deg, #1976D2, #0D47A1);
+    border-radius: 8px;
 }
 
 /* Tab styling */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 0.5rem;
-    background-color: #FFFFFF;
-    padding: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
+    gap: 1rem;
+    background-color: #F0F7FF;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.1);
 }
 
 .stTabs [data-baseweb="tab"] {
-    height: 40px;
+    height: 50px;
     white-space: pre-wrap;
-    background-color: #F3F6FF;
-    border-radius: 6px;
-    color: #283593;
-    padding: 0.5rem 1rem;
+    background-color: white;
+    border-radius: 8px;
+    color: #0D47A1;
+    padding: 1rem 1.5rem;
     transition: all 0.3s ease;
-    border: 1px solid #E8EAF6;
+    border: 1px solid #1565C0;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background-color: #E8EAF6;
-    border-color: #3F51B5;
+    background-color: #E3F2FD;
+    border-color: #1976D2;
 }
 
 .stTabs [data-baseweb="tab"][data-baseweb="tab--selected"] {
-    background-color: #3F51B5;
+    background-color: #1565C0;
     color: white;
-    border-color: #3F51B5;
+    border-color: #1565C0;
 }
 
 /* Analysis section styling */
 .analysis-section {
     background-color: #FFFFFF;
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 1rem 0;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 /* HR Stats styling */
 .hr-stats-container {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 1rem 0;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
+    background-color: #F0F7FF;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 .hr-stats-container h3 {
-    color: #283593;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
+    color: #0D47A1;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
 
 /* Metric styling */
 [data-testid="stMetric"] {
-    background-color: #FFFFFF;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
     transition: transform 0.2s ease;
 }
 
 [data-testid="stMetric"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.15);
 }
 
 [data-testid="stMetricLabel"] {
     font-weight: 600;
-    color: #283593;
-    font-size: 1rem;
+    color: #0D47A1;
+    font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #3F51B5;
-    font-size: 1.5rem !important;
+    color: #1565C0;
+    font-size: 1.8rem !important;
     font-weight: 700;
 }
 
 /* Typography */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    color: #283593;
+    color: #0D47A1;
     font-weight: 600;
     letter-spacing: 0.5px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .stMarkdown p {
-    color: #3F51B5;
-    line-height: 1.5;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    color: #1565C0;
+    line-height: 1.7;
+    font-size: 1.1rem;
 }
 
 /* Skills list styling */
 .stMarkdown ul {
     list-style-type: none;
     padding-left: 0;
-    margin: 0.5rem 0;
 }
 
 .stMarkdown ul li {
-    background-color: #F3F6FF;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    margin-bottom: 0.25rem;
-    color: #283593;
+    background-color: #E3F2FD;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    color: #0D47A1;
     font-weight: 500;
-    border: 1px solid #E8EAF6;
 }
 
 /* Recent uploads table styling */
 [data-testid="stDataFrame"] {
-    background-color: #FFFFFF;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.1);
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
 }
 
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
     .main {
-        background-color: #1A237E;
+        background-color: #0A1929;
     }
 
     .analysis-section, 
     .hr-stats-container,
     [data-testid="stMetric"] {
-        background-color: #283593;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        background-color: #132F4C;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stFileUploader"] {
-        background-color: #283593;
-        border-color: #3F51B5;
+        background-color: #132F4C;
+        border-color: #1565C0;
     }
 
     .stMarkdown p,
     [data-testid="stMetricLabel"] {
-        color: #C5CAE9;
+        color: #90CAF9;
     }
 
     .stMarkdown ul li {
-        background-color: #3F51B5;
-        color: #C5CAE9;
-        border-color: #3F51B5;
+        background-color: #1E4976;
+        color: #90CAF9;
     }
 }
