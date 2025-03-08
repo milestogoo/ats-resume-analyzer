@@ -126,80 +126,80 @@ with st.container():
                 if st.session_state.is_first_upload:
                     st.session_state.is_first_upload = False
 
-                # Add Extracted Roles Section with improved design
-                st.markdown("""
-                    <div class='section-header'>
-                        <h3>👔 Detected Professional Roles</h3>
-                    </div>
-                """, unsafe_allow_html=True)
+                # Add CV Preview Panel
+                st.markdown("### 📄 CV Preview")
+                with st.expander("View Resume Content", expanded=True):
+                    preview_tabs = st.tabs(["Formatted Text", "Raw Content"])
+
+                    with preview_tabs[0]:
+                        st.markdown("""
+                        <div style='background-color: white; padding: 20px; border-radius: 10px; border: 1px solid #E8EAF6;'>
+                            <h4 style='color: #283593;'>Parsed Content</h4>
+                        """, unsafe_allow_html=True)
+
+                        sections = resume_text.split('\n\n')
+                        for section in sections:
+                            if section.strip():
+                                st.markdown(f"<p style='color: #3F51B5; margin-bottom: 10px;'>{section}</p>", 
+                                          unsafe_allow_html=True)
+
+                        st.markdown("</div>", unsafe_allow_html=True)
+
+                    with preview_tabs[1]:
+                        st.text_area("Raw Text", resume_text, height=300)
+
+                # Add Extracted Roles Section
+                st.markdown("### 👔 Detected Roles")
+                role_cols = st.columns(len(extracted_roles) if extracted_roles else 1)
 
                 if extracted_roles:
-                    # Create a modern role cards layout
-                    roles_html = """
-                    <div class='role-grid'>
-                    """
-
-                    for role_info in extracted_roles:
-                        # Define category-specific icons and colors
-                        category_styles = {
-                            'engineering': {'icon': '⚙️', 'color': '#3F51B5'},
-                            'management': {'icon': '👥', 'color': '#673AB7'},
-                            'data': {'icon': '📊', 'color': '#2196F3'},
-                            'design': {'icon': '🎨', 'color': '#009688'},
-                            'operations': {'icon': '🔧', 'color': '#4CAF50'}
-                        }
-
-                        style = category_styles.get(role_info['category'].lower(), 
-                                                  {'icon': '💼', 'color': '#3F51B5'})
-
-                        roles_html += f"""
-                        <div class='role-card' style='border-left: 4px solid {style["color"]}'>
-                            <div class='role-icon'>{style['icon']}</div>
-                            <div class='role-content'>
-                                <h4>{role_info['role']}</h4>
-                                <span class='role-category'>{role_info['category'].title()}</span>
-                                <span class='role-match'>{role_info['match_type'].title()} Match</span>
+                    for idx, role_info in enumerate(extracted_roles):
+                        with role_cols[idx]:
+                            st.markdown(f"""
+                            <div style='background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #E8EAF6;'>
+                                <h4 style='color: #283593; margin: 0;'>{role_info['role']}</h4>
+                                <p style='color: #3F51B5; margin: 5px 0;'>{role_info['category'].title()}</p>
                             </div>
-                        </div>
-                        """
-
-                    roles_html += "</div>"
-                    st.markdown(roles_html, unsafe_allow_html=True)
+                            """, unsafe_allow_html=True)
                 else:
                     st.info("No specific roles detected in the resume")
 
                 # Add Job Recommendations
                 if extracted_roles:
-                    st.markdown("""
-                        <div class='section-header'>
-                            <h3>💼 Job Recommendations</h3>
-                        </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown("### 💼 Job Recommendations")
 
                     # Add filter buttons
                     st.markdown("**🔍 Filter by posting date:**")
                     filter_cols = st.columns(5)
-                    filter_options = [
-                        ("All", "all", "Show all job postings"),
-                        ("Today", "today", "Show jobs posted today"),
-                        ("Last 3 Days", "3days", "Show jobs from the last 3 days"),
-                        ("Last Week", "7days", "Show jobs from the last 7 days"),
-                        ("Last 3 Weeks", "21days", "Show jobs from the last 21 days")
-                    ]
-
-                    for idx, (label, value, help_text) in enumerate(filter_options):
-                        with filter_cols[idx]:
-                            if st.button(
-                                label,
-                                type="secondary",
-                                use_container_width=True,
-                                help=help_text,
-                                key=f"filter_{value}"
-                            ):
-                                st.session_state.job_filter_period = value
+                    with filter_cols[0]:
+                        if st.button("All", type="secondary", 
+                                     use_container_width=True,
+                                     help="Show all job postings"):
+                            st.session_state.job_filter_period = 'all'
+                    with filter_cols[1]:
+                        if st.button("Today", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs posted today"):
+                            st.session_state.job_filter_period = 'today'
+                    with filter_cols[2]:
+                        if st.button("Last 3 Days", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 3 days"):
+                            st.session_state.job_filter_period = '3days'
+                    with filter_cols[3]:
+                        if st.button("Last Week", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 7 days"):
+                            st.session_state.job_filter_period = '7days'
+                    with filter_cols[4]:
+                        if st.button("Last 3 Weeks", type="secondary",
+                                     use_container_width=True,
+                                     help="Show jobs from the last 21 days"):
+                            st.session_state.job_filter_period = '21days'
 
                     with st.spinner("Searching for relevant jobs..."):
                         jobs = job_crawler.search_jobs(search_keywords)
+                        # Filter jobs based on date
                         filtered_jobs = job_crawler.filter_jobs_by_date(jobs, st.session_state.job_filter_period)
                         categorized_jobs = job_crawler.format_jobs_for_display(filtered_jobs)
 
@@ -211,13 +211,11 @@ with st.container():
                                 if jobs:
                                     for job in jobs:
                                         st.markdown(f"""
-                                        <div class='job-card'>
-                                            <h4>{job['title']}</h4>
-                                            <p class='job-meta'>{job['company']} - {job['location']}</p>
-                                            <p class='job-description'>{job['description']}</p>
-                                            <a href='{job['url']}' target='_blank' class='job-link'>
-                                                View Details →
-                                            </a>
+                                        <div style='background-color: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #E8EAF6;'>
+                                            <h4 style='color: #283593; margin: 0;'>{job['title']}</h4>
+                                            <p style='color: #3F51B5; margin: 5px 0;'>{job['company']} - {job['location']}</p>
+                                            <p style='color: #666; font-size: 0.9em;'>{job['description']}</p>
+                                            <a href='{job['url']}' target='_blank' style='color: #3F51B5;'>View Details →</a>
                                         </div>
                                         """, unsafe_allow_html=True)
                                 else:
